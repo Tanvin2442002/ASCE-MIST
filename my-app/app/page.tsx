@@ -8,12 +8,13 @@ import Navigation from "@/components/navigation"
 import { LampContainer } from "@/components/lamp-container"
 import { FloatingBlobs, CurvyDivider } from "@/components/organic-shape"
 import { motion } from "framer-motion"
+import Footer from "@/components/footer"
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation Component */}
-      <Navigation currentPath="/" />
+      {/* <Navigation currentPath="/" /> */}
 
       {/* Hero Section */}
       <LampContainer className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 relative">
@@ -61,6 +62,124 @@ export default function HomePage() {
       </LampContainer>
 
       <CurvyDivider className="text-primary -mt-1" />
+
+      {/* Announcements Section */}
+      <section id="announcements" className="py-16 bg-muted/20 relative overflow-hidden">
+        <div className="absolute top-10 left-10 w-72 h-72 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-3xl animate-blob" />
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.h2
+            className="text-3xl font-bold text-center text-foreground mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Recent Announcements
+          </motion.h2>
+          <motion.p
+            className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-pretty"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            Stay updated with the latest news, achievements, and important updates from our ASCE chapter
+          </motion.p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                type: "Achievement",
+                date: "Dec 8, 2024",
+                title: "MIST Team Wins National Bridge Competition",
+                desc: "Our student team secured first place in the Bangladesh National Bridge Design Competition with their innovative sustainable design approach.",
+                image: "/engineering-students-celebrating-with-trophy-at-br.jpg",
+                priority: true,
+              },
+              {
+                type: "Research",
+                date: "Nov 28, 2024",
+                title: "New Research Lab Opens at MIST",
+                desc: "State-of-the-art Structural Engineering Research Laboratory inaugurated with advanced testing equipment and simulation capabilities.",
+                image: "/modern-engineering-laboratory-with-testing-equipme.jpg",
+                priority: false,
+              },
+              {
+                type: "Partnership",
+                date: "Nov 15, 2024",
+                title: "Industry Partnership with Leading Construction Firm",
+                desc: "ASCE @ MIST announces strategic partnership with Bangladesh's top construction company for internships and research collaboration.",
+                image: "/professional-handshake-between-university-and-indu.jpg",
+                priority: false,
+              },
+            ].map((announcement, index) => (
+              <motion.div
+                key={announcement.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="h-full"
+              >
+                <Card className="hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-card/90 backdrop-blur-sm border-border/50 overflow-hidden group h-full flex flex-col">
+                  <div className="aspect-video overflow-hidden flex-shrink-0">
+                    <img
+                      src={announcement.image || "/placeholder.svg"}
+                      alt={announcement.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <CardHeader className="pb-3 flex-shrink-0">
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge
+                        variant={announcement.priority ? "default" : "secondary"}
+                        className={
+                          announcement.priority
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-accent/20 text-accent-foreground border-accent/30"
+                        }
+                      >
+                        {announcement.type}
+                      </Badge>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        {announcement.date}
+                      </div>
+                    </div>
+                    <CardTitle className="text-card-foreground text-balance leading-tight group-hover:text-primary transition-colors">
+                      {announcement.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                    <CardDescription className="text-pretty mb-4 leading-relaxed flex-1">
+                      {announcement.desc}
+                    </CardDescription>
+                    <Button
+                      variant="outline"
+                      className="w-full border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-200 bg-transparent mt-auto"
+                    >
+                      Read Full Story
+                      <ExternalLink className="w-4 h-4 ml-2" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
+            >
+              View All Announcements
+            </Button>
+          </motion.div>
+        </div>
+      </section>
 
       {/* About Section */}
       <section id="about" className="py-16 bg-card/50 relative overflow-hidden">
@@ -152,7 +271,7 @@ export default function HomePage() {
           >
             Upcoming Events
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
                 type: "Workshop",
@@ -178,10 +297,11 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="h-full"
               >
-                <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur-sm">
-                  <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 rounded-t-lg"></div>
-                  <CardHeader>
+                <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur-sm h-full flex flex-col">
+                  <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 rounded-t-lg flex-shrink-0"></div>
+                  <CardHeader className="flex-shrink-0">
                     <div className="flex items-center justify-between">
                       <Badge variant="secondary" className="bg-accent text-accent-foreground">
                         {event.type}
@@ -189,9 +309,9 @@ export default function HomePage() {
                       <span className="text-sm text-muted-foreground">{event.date}</span>
                     </div>
                     <CardTitle className="text-card-foreground">{event.title}</CardTitle>
-                    <CardDescription>{event.desc}</CardDescription>
+                    <CardDescription className="flex-1">{event.desc}</CardDescription>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="mt-auto">
                     <Button className="w-full bg-primary hover:bg-primary/90">
                       {event.type === "Competition" ? "Learn More" : "Register Now"}
                     </Button>
@@ -216,7 +336,7 @@ export default function HomePage() {
             >
               Why Join ASCE @ MIST?
             </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="space-y-6">
                 {[
                   {
@@ -298,7 +418,7 @@ export default function HomePage() {
       <section id="gallery" className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12">Gallery</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
@@ -317,15 +437,15 @@ export default function HomePage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12">What Our Members Say</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card>
-              <CardHeader>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="h-full flex flex-col">
+              <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
                   "Being part of ASCE @ MIST has opened doors to incredible networking opportunities and helped me grow
                   as a future civil engineer."
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="mt-auto">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-semibold">SA</span>
@@ -338,14 +458,14 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
+            <Card className="h-full flex flex-col">
+              <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
                   "The research opportunities and mentorship from faculty advisors have been invaluable for my academic
                   and professional development."
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="mt-auto">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-semibold">MR</span>
@@ -358,14 +478,14 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
+            <Card className="h-full flex flex-col">
+              <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
                   "The competitions and workshops have enhanced my technical skills and prepared me for real-world
                   engineering challenges."
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="mt-auto">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-semibold">AH</span>
@@ -382,67 +502,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-foreground text-background py-12 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-primary/20 to-accent/20 rounded-full blur-3xl" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold">A</span>
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg">ASCE Student Chapter</h3>
-                  <p className="text-sm opacity-80">MIST, Bangladesh</p>
-                </div>
-              </div>
-              <p className="text-sm opacity-80 mb-4">
-                Building the future of civil engineering through education, research, and professional development.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Contact Information</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center space-x-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>MIST Campus, Mirpur Cantonment, Dhaka</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Mail className="w-4 h-4" />
-                  <span>asce@mist.ac.bd</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4" />
-                  <span>+880-2-8031101</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <div className="space-y-2 text-sm">
-                <a href="#" className="block hover:text-primary transition-colors">
-                  ASCE Global Website
-                </a>
-                <a href="#" className="block hover:text-primary transition-colors">
-                  MIST Official Site
-                </a>
-                <a href="#" className="block hover:text-primary transition-colors">
-                  Student Resources
-                </a>
-                <a href="#" className="block hover:text-primary transition-colors">
-                  Career Opportunities
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-background/20 mt-8 pt-8 text-center text-sm opacity-80">
-            <p>&copy; 2024 ASCE Student Chapter - MIST. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      {/* <Footer /> */}
     </div>
   )
 }
