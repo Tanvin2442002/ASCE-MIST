@@ -1,4 +1,5 @@
 import { MapPin, Mail, Phone } from "lucide-react"
+import Link from "next/link"
 
 export default function Footer() {
   return (
@@ -42,18 +43,18 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <div className="space-y-2 text-sm">
-              <a href="#" className="block hover:text-primary transition-colors">
+              <Link href="#" className="block hover:text-primary transition-colors">
                 ASCE Global Website
-              </a>
-              <a href="#" className="block hover:text-primary transition-colors">
+              </Link>
+              <Link href="#" className="block hover:text-primary transition-colors">
                 MIST Official Site
-              </a>
-              <a href="#" className="block hover:text-primary transition-colors">
+              </Link>
+              <Link href="#" className="block hover:text-primary transition-colors">
                 Student Resources
-              </a>
-              <a href="#" className="block hover:text-primary transition-colors">
+              </Link>
+              <Link href="#" className="block hover:text-primary transition-colors">
                 Career Opportunities
-              </a>
+              </Link>
             </div>
           </div>
         </div>

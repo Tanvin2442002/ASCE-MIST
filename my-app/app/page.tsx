@@ -441,8 +441,8 @@ export default function HomePage() {
             <Card className="h-full flex flex-col">
               <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
-                  "Being part of ASCE @ MIST has opened doors to incredible networking opportunities and helped me grow
-                  as a future civil engineer."
+                  &quot;Being part of ASCE @ MIST has opened doors to incredible networking opportunities and helped me grow
+                  as a future civil engineer.&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent className="mt-auto">
@@ -453,26 +453,6 @@ export default function HomePage() {
                   <div>
                     <p className="font-semibold text-foreground">Sarah Ahmed</p>
                     <p className="text-sm text-muted-foreground">Chapter President</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="h-full flex flex-col">
-              <CardHeader className="flex-1">
-                <CardDescription className="text-base italic">
-                  "The research opportunities and mentorship from faculty advisors have been invaluable for my academic
-                  and professional development."
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="mt-auto">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground font-semibold">MR</span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground">Dr. Mohammad Rahman</p>
-                    <p className="text-sm text-muted-foreground">Faculty Advisor</p>
                   </div>
                 </div>
               </CardContent>
@@ -493,6 +473,26 @@ export default function HomePage() {
                   <div>
                     <p className="font-semibold text-foreground">Ahmed Hassan</p>
                     <p className="text-sm text-muted-foreground">Student Member</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="h-full flex flex-col">
+              <CardHeader className="flex-1">
+                <CardDescription className="text-base italic">
+                  &quot;The research opportunities and mentorship from faculty advisors have been invaluable for my academic
+                  and professional development.&quot;
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="mt-auto">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                    <span className="text-primary-foreground font-semibold">MR</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground">Dr. Mohammad Rahman</p>
+                    <p className="text-sm text-muted-foreground">Faculty Advisor</p>
                   </div>
                 </div>
               </CardContent>

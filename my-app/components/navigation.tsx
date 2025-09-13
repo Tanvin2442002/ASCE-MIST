@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X, MoreHorizontal, ChevronDown } from "lucide-react"
+import Link from "next/link"
 
 const navigationLinks = [
   { name: "Home", href: "/" },
@@ -110,7 +111,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                       {isActivitiesOpen && (
                         <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50">
                           {activitiesDropdown.map((item) => (
-                            <a
+                            <Link
                               key={item.name}
                               href={item.href}
                               className={`block px-4 py-2 text-sm font-medium transition-all duration-300 relative ${
@@ -121,7 +122,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                               onClick={() => setIsActivitiesOpen(false)}
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       )}
@@ -130,7 +131,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                 }
 
                 return (
-                  <a
+                  <Link
                     key={link.name}
                     href={link.href}
                     className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 relative ${
@@ -140,7 +141,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                     }`}
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 )
               })}
             </nav>
@@ -159,7 +160,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
               {isDesktopMenuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50">
                   {secondaryLinks.map((link) => (
-                    <a
+                    <Link
                       key={link.name}
                       href={link.href}
                       className={`block px-4 py-2 text-sm font-medium transition-all duration-300 relative ${
@@ -170,7 +171,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                       onClick={() => setIsDesktopMenuOpen(false)}
                     >
                       {link.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -214,7 +215,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                       {isActivitiesOpen && (
                         <div className="ml-4 mt-1 space-y-1">
                           {activitiesDropdown.map((item) => (
-                            <a
+                            <Link
                               key={item.name}
                               href={item.href}
                               className={`block px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 relative ${
@@ -228,7 +229,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                               }}
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       )}
@@ -237,7 +238,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                 }
 
                 return (
-                  <a
+                  <Link
                     key={link.name}
                     href={link.href}
                     className={`px-3 py-3 text-sm font-medium rounded-md transition-all duration-300 relative ${
@@ -248,7 +249,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 )
               })}
             </nav>

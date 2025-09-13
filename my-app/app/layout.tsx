@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import NavigationWrapper from "@/components/navigation-wrapper"
+import Link from "next/link"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -36,24 +37,24 @@ export default function RootLayout({
                 <h4 className="text-md font-semibold mb-3">Quick Links</h4>
                 <ul className="space-y-2 text-sm text-gray-300">
                   <li>
-                    <a href="/about" className="hover:text-white">
+                    <Link href="/about" className="hover:text-white">
                       About Us
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/activities" className="hover:text-white">
+                    <Link href="/activities" className="hover:text-white">
                       Activities
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/membership" className="hover:text-white">
+                    <Link href="/membership" className="hover:text-white">
                       Membership
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/contact" className="hover:text-white">
+                    <Link href="/contact" className="hover:text-white">
                       Contact
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -61,19 +62,19 @@ export default function RootLayout({
                 <h4 className="text-md font-semibold mb-3">Activities</h4>
                 <ul className="space-y-2 text-sm text-gray-300">
                   <li>
-                    <a href="/activities/site-visit" className="hover:text-white">
+                    <Link href="/activities/site-visit" className="hover:text-white">
                       Site Visits
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/activities/seminar" className="hover:text-white">
+                    <Link href="/activities/seminar" className="hover:text-white">
                       Seminars
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/activities/workshop" className="hover:text-white">
+                    <Link href="/activities/workshop" className="hover:text-white">
                       Workshops
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
