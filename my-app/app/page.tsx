@@ -200,7 +200,7 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              The American Society of Civil Engineers (ASCE) is the world's oldest national engineering society. Our
+              The American Society of Civil Engineers (ASCE) is the world&apos;s oldest national engineering society. Our
               student chapter at MIST focuses on professional development, networking, research opportunities, and
               preparing the next generation of civil engineering leaders in Bangladesh.
             </motion.p>
@@ -461,8 +461,8 @@ export default function HomePage() {
             <Card className="h-full flex flex-col">
               <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
-                  "The competitions and workshops have enhanced my technical skills and prepared me for real-world
-                  engineering challenges."
+                  &quot;The competitions and workshops have enhanced my technical skills and prepared me for real-world
+                  engineering challenges.&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent className="mt-auto">
