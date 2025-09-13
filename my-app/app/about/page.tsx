@@ -61,7 +61,7 @@ export default function AboutPage() {
           >
             <Badge className="mb-6 bg-emerald-500/10 text-emerald-700 border-emerald-500/20">About Our Chapter</Badge>
             <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
-              Building Tomorrow's
+              Building Tomorrow&rsquo;s
               <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 {" "}
                 Civil Engineers
@@ -100,7 +100,7 @@ export default function AboutPage() {
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   As the MIST chapter of this prestigious global organization, we serve as a bridge between academic
-                  learning and professional practice, preparing our students to become leaders in Bangladesh's civil
+                  learning and professional practice, preparing our students to become leaders in Bangladesh&apos;s civil
                   engineering landscape.
                 </p>
               </div>
