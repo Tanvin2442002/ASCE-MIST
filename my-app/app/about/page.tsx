@@ -321,7 +321,7 @@ export default function AboutPage() {
           >
             <h2 className="text-3xl font-bold text-foreground mb-6">Join Our Mission</h2>
             <p className="text-lg text-muted-foreground mb-8 text-pretty">
-              Be part of a community that's shaping the future of civil engineering in Bangladesh. Together, we can
+              Be part of a community that&apos;s shaping the future of civil engineering in Bangladesh. Together, we can
               build a better tomorrow through innovation, collaboration, and excellence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -1,6 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation"
+import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -263,9 +264,9 @@ export default function AchievementDetailPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Achievement Not Found</h1>
-          <p className="text-gray-600 mb-6">The achievement you're looking for doesn't exist.</p>
+          <p className="text-gray-600 mb-6">The achievement you&apos;re looking for doesn&apos;t exist.</p>
           <Button asChild>
-            <a href="/achievements">Back to Achievements</a>
+            <Link href="/achievements">Back to Achievements</Link>
           </Button>
         </div>
       </div>
@@ -305,7 +306,7 @@ export default function AchievementDetailPage() {
         {/* Back Button */}
         <div className="mb-6">
           <Button variant="outline" asChild>
-            <a href="/achievements">← Back to Achievements</a>
+            <Link href="/achievements">← Back to Achievements</Link>
           </Button>
         </div>
 
@@ -384,10 +385,10 @@ export default function AchievementDetailPage() {
         {/* Action Buttons */}
         <div className="flex justify-center mt-8 space-x-4">
           <Button asChild>
-            <a href="/achievements">View All Achievements</a>
+            <Link href="/achievements">View All Achievements</Link>
           </Button>
           <Button variant="outline" asChild>
-            <a href="/contact">Contact Us</a>
+            <Link href="/contact">Contact Us</Link>
           </Button>
         </div>
       </div>

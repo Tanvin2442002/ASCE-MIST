@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -188,7 +189,7 @@ export default function AchievementsPage() {
               key={achievement.id}
               className="bg-white border-0 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group"
             >
-              <a href={`/achievements/${achievement.id}`} className="block">
+              <Link href={`/achievements/${achievement.id}`} className="block">
                 <div className="aspect-video relative overflow-hidden rounded-t-lg">
                   <img
                     src={achievement.image || "/placeholder.svg"}
@@ -225,7 +226,7 @@ export default function AchievementsPage() {
                     </Button>
                   </div>
                 </CardContent>
-              </a>
+              </Link>
             </Card>
           ))}
         </div>
