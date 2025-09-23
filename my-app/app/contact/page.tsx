@@ -9,19 +9,33 @@ interface ContactForm {
 
 export default function ContactPage(): JSX.Element {
   // Prefer a public-prefixed env var for client-side use (NEXT_PUBLIC_GOOGLE for Next.js/Vite).
-  const apiKey: string = (process.env.NEXT_PUBLIC_GOOGLE as string) || (process.env.GOOGLE as string) || "";
+  const apiKey: string =
+    (process.env.NEXT_PUBLIC_GOOGLE as string) ||
+    (process.env.GOOGLE as string) ||
+    "";
   console.log("Google Maps API Key:", apiKey ? "Detected" : "Not Detected");
-  const placeQuery = "Military Institute of Science and Technology, Dhaka, Bangladesh";
+
+  const placeQuery =
+    "Military Institute of Science and Technology, Dhaka, Bangladesh";
   const mapSrc: string = apiKey
-    ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodeURIComponent(placeQuery)}`
-    : `https://www.google.com/maps?q=${encodeURIComponent(placeQuery)}&output=embed`;
+    ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodeURIComponent(
+        placeQuery
+      )}`
+    : `https://www.google.com/maps?q=${encodeURIComponent(
+        placeQuery
+      )}&output=embed`;
 
   const [form, setForm] = useState<ContactForm>({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<{ type: "loading" | "success" | "error" | null; message: string | null } | null>(null);
+  const [status, setStatus] = useState<
+    { type: "loading" | "success" | "error" | null; message: string | null } | null
+  >(null);
 
   // Newsletter small form state
   const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterStatus, setNewsletterStatus] = useState<null | { type: "loading" | "success" | "error"; message: string }>(null);
+  const [newsletterStatus, setNewsletterStatus] = useState<
+    | null
+    | { type: "loading" | "success" | "error"; message: string }
+  >(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -35,7 +49,7 @@ export default function ContactPage(): JSX.Element {
     try {
       // Replace this simulated submission with your actual backend endpoint.
       await new Promise((r) => setTimeout(r, 700));
-      setStatus({ type: "success", message: "Message sent. We'll get back to you soon." });
+      setStatus({ type: "success", message: "Message sent. We will get back to you soon." });
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
       setStatus({ type: "error", message: "Failed to send message. Try again later." });
@@ -60,9 +74,24 @@ export default function ContactPage(): JSX.Element {
 
   // Example announcements (replace with dynamic data when available)
   const announcements = [
-    { id: 1, title: "ASCE MIST — Annual Technical Workshop", date: "Oct 15, 2025", summary: "Hands-on workshops, industry speakers and project showcases. Registration opens soon." },
-    { id: 2, title: "Volunteer Drive: Campus Cleanup", date: "Sep 30, 2025", summary: "Join fellow students for a weekend campus cleanup and community service hours." },
-    { id: 3, title: "Resume Review Sessions", date: "Recurring", summary: "Drop by our office hours for resume feedback from seniors and alumni." },
+    {
+      id: 1,
+      title: "ASCE MIST — Annual Technical Workshop",
+      date: "Oct 15, 2025",
+      summary: "Hands-on workshops, industry speakers and project showcases. Registration opens soon.",
+    },
+    {
+      id: 2,
+      title: "Volunteer Drive: Campus Cleanup",
+      date: "Sep 30, 2025",
+      summary: "Join fellow students for a weekend campus cleanup and community service hours.",
+    },
+    {
+      id: 3,
+      title: "Resume Review Sessions",
+      date: "Recurring",
+      summary: "Drop by our office hours for resume feedback from seniors and alumni.",
+    },
   ];
 
   return (
@@ -71,7 +100,7 @@ export default function ContactPage(): JSX.Element {
         <header className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-extrabold text-green-900">Contact ASCE — MIST</h1>
           <p className="mt-3 text-lg text-green-800 max-w-2xl mx-auto">
-            We're here to help — questions, collaborations or membership inquiries welcome.
+            We{"'"}re here to help — questions, collaborations or membership inquiries welcome.
           </p>
         </header>
 
