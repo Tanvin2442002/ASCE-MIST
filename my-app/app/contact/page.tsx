@@ -19,6 +19,10 @@ export default function ContactPage(): JSX.Element {
   const [form, setForm] = useState<ContactForm>({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<{ type: "loading" | "success" | "error" | null; message: string | null } | null>(null);
 
+  // Newsletter small form state
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<null | { type: "loading" | "success" | "error"; message: string }>(null);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((s) => ({ ...s, [name]: value }));
@@ -30,10 +34,6 @@ export default function ContactPage(): JSX.Element {
 
     try {
       // Replace this simulated submission with your actual backend endpoint.
-      // Example:
-      // const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
-      // if (!res.ok) throw new Error('Network error');
-
       await new Promise((r) => setTimeout(r, 700));
       setStatus({ type: "success", message: "Message sent. We'll get back to you soon." });
       setForm({ name: "", email: "", message: "" });
@@ -42,16 +42,41 @@ export default function ContactPage(): JSX.Element {
     }
   };
 
+  const handleNewsletterSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail || !/\S+@\S+\.\S+/.test(newsletterEmail)) {
+      setNewsletterStatus({ type: "error", message: "Please provide a valid email." });
+      return;
+    }
+    setNewsletterStatus({ type: "loading", message: "Subscribing..." });
+    try {
+      await new Promise((r) => setTimeout(r, 600));
+      setNewsletterStatus({ type: "success", message: "Subscribed — check your inbox for confirmation." });
+      setNewsletterEmail("");
+    } catch {
+      setNewsletterStatus({ type: "error", message: "Subscription failed. Try again later." });
+    }
+  };
+
+  // Example announcements (replace with dynamic data when available)
+  const announcements = [
+    { id: 1, title: "ASCE MIST — Annual Technical Workshop", date: "Oct 15, 2025", summary: "Hands-on workshops, industry speakers and project showcases. Registration opens soon." },
+    { id: 2, title: "Volunteer Drive: Campus Cleanup", date: "Sep 30, 2025", summary: "Join fellow students for a weekend campus cleanup and community service hours." },
+    { id: 3, title: "Resume Review Sessions", date: "Recurring", summary: "Drop by our office hours for resume feedback from seniors and alumni." },
+  ];
+
   return (
     <div className="min-h-screen bg-green-50 text-gray-800">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <header className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-extrabold text-green-900">Contact ASCE — MIST</h1>
-          <p className="mt-3 text-lg text-green-800 max-w-2xl mx-auto">We're here to help — questions, collaborations or membership inquiries welcome.</p>
+          <p className="mt-3 text-lg text-green-800 max-w-2xl mx-auto">
+            We're here to help — questions, collaborations or membership inquiries welcome.
+          </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left column: contact card & quick info */}
+          {/* Left column: contact card & news/resources */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white shadow-lg rounded-2xl p-6 ring-1 ring-green-100">
               <h2 className="text-xl font-semibold text-green-900 mb-4">Contact Information</h2>
@@ -59,7 +84,13 @@ export default function ContactPage(): JSX.Element {
               <dl className="space-y-4 text-sm text-green-800">
                 <div>
                   <dt className="font-medium">Address</dt>
-                  <dd className="text-gray-600">Military Institute of Science and Technology<br />Mirpur Cantonment, Dhaka-1216<br />Bangladesh</dd>
+                  <dd className="text-gray-600">
+                    Military Institute of Science and Technology
+                    <br />
+                    Mirpur Cantonment, Dhaka-1216
+                    <br />
+                    Bangladesh
+                  </dd>
                 </div>
                 <div>
                   <dt className="font-medium">Phone</dt>
@@ -67,7 +98,11 @@ export default function ContactPage(): JSX.Element {
                 </div>
                 <div>
                   <dt className="font-medium">Email</dt>
-                  <dd className="text-gray-600">asce@mist.ac.bd<br />info.asce.mist@gmail.com</dd>
+                  <dd className="text-gray-600">
+                    asce@mist.ac.bd
+                    <br />
+                    info.asce.mist@gmail.com
+                  </dd>
                 </div>
                 <div>
                   <dt className="font-medium">Office Hours</dt>
@@ -87,29 +122,76 @@ export default function ContactPage(): JSX.Element {
               </div>
             </div>
 
+            {/* NEWS & RESOURCES (replaces visit options) */}
             <div className="bg-white shadow-lg rounded-2xl p-6 ring-1 ring-green-100">
-              <h2 className="text-xl font-semibold text-green-900 mb-4">Visit Options</h2>
-              <div className="grid grid-cols-1 gap-4 text-sm text-green-800">
-                <div className="flex items-start space-x-3">
-                  <div className="p-3 bg-green-50 rounded-full">🚗</div>
-                  <div>
-                    <p className="font-medium">By Car</p>
-                    <p className="text-gray-600">On-campus visitor parking is available.</p>
-                  </div>
+              <h2 className="text-xl font-semibold text-green-900 mb-3">News & Resources</h2>
+
+              <div className="space-y-3">
+                {/* Announcements */}
+                <div>
+                  <h3 className="text-sm font-medium text-green-900 mb-2">Latest Announcements</h3>
+                  <ul className="divide-y divide-gray-100">
+                    {announcements.map((a) => (
+                      <li key={a.id} className="py-2">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-gray-800">{a.title}</p>
+                            <p className="text-xs text-gray-500">{a.summary}</p>
+                          </div>
+                          <span className="text-xs text-gray-400 ml-4">{a.date}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="p-3 bg-green-50 rounded-full">🚌</div>
-                  <div>
-                    <p className="font-medium">By Bus</p>
-                    <p className="text-gray-600">Take buses going to Mirpur Cantonment; campus is a short walk.</p>
-                  </div>
+
+                {/* Newsletter */}
+                <div>
+                  <h3 className="text-sm font-medium text-green-900 mb-2">Newsletter</h3>
+                  <form onSubmit={handleNewsletterSubmit} className="flex items-center space-x-2">
+                    <input
+                      type="email"
+                      aria-label="Newsletter email"
+                      placeholder="you@domain.com"
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      className="flex-1 rounded-md border-gray-200 shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300 text-sm"
+                    />
+                    <button
+                      type="submit"
+                      className="px-3 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700 transition"
+                    >
+                      Subscribe
+                    </button>
+                  </form>
+                  {newsletterStatus && (
+                    <p className={`mt-2 text-xs ${newsletterStatus.type === "success" ? "text-green-700" : "text-red-600"}`}>
+                      {newsletterStatus.message}
+                    </p>
+                  )}
+                  <p className="mt-2 text-xs text-gray-500">Get event notifications, opportunities and announcements.</p>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="p-3 bg-green-50 rounded-full">🚕</div>
-                  <div>
-                    <p className="font-medium">Rideshare</p>
-                    <p className="text-gray-600">Uber / Pathao drop-offs available at the main gate.</p>
-                  </div>
+
+                {/* Resources */}
+                <div>
+                  <h3 className="text-sm font-medium text-green-900 mb-2">Quick Links</h3>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>
+                      <a href="#" onClick={(e) => e.preventDefault()} className="underline">
+                        Membership Benefits
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" onClick={(e) => e.preventDefault()} className="underline">
+                        Student Resources & Guides
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" onClick={(e) => e.preventDefault()} className="underline">
+                        Volunteer & Project Opportunities
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -183,7 +265,9 @@ export default function ContactPage(): JSX.Element {
             <div className="bg-white shadow-lg rounded-2xl overflow-hidden ring-1 ring-green-100">
               <div className="p-6">
                 <h2 className="text-2xl font-semibold text-green-900 mb-4">Location</h2>
-                <p className="text-sm text-green-800 mb-4">Interactive map powered by Google Maps. {apiKey ? "Key detected from environment." : "No API key detected — using public search embed."}</p>
+                <p className="text-sm text-green-800 mb-4">
+                  Interactive map powered by Google Maps. {apiKey ? "Key detected from environment." : "No API key detected — using public search embed."}
+                </p>
               </div>
 
               <div className="w-full h-96">
