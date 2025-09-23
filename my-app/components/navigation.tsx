@@ -24,7 +24,7 @@ const activitiesDropdown = [
   { name: "Webinar", href: "/activities/webinar" },
   { name: "Poster Presentation", href: "/activities/poster-presentation" },
   { name: "Social Events", href: "/activities/social-events" },
-  { name: "Executive Session", href: "/activities/executive-session" },
+  { name: "Announcement", href: "/activities/announcement" },
 ]
 
 interface NavigationProps {
