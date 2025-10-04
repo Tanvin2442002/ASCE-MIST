@@ -1,88 +1,154 @@
+"use client"
+
+import React, { useEffect, useState } from "react"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar, MapPin, User, Play, ExternalLink } from "lucide-react"
 
-// Sample seminar data (same as in the main page)
-const seminars = [
-  {
-    id: 1,
-    title: "Sustainable Infrastructure Development in Bangladesh",
-    date: "March 15, 2024",
-    time: "2:00 PM - 4:00 PM",
-    speaker: "Dr. Ahmed Rahman",
-    designation: "Professor, Civil Engineering, MIST",
-    location: "ASCE Auditorium, MIST",
-    attendees: 150,
-    image: "/images/sustainable-infrastructure-seminar.jpg",
-    additionalImages: [
-      {
-        url: "/images/sustainable-infrastructure-speaker.jpg",
-        caption: "Dr. Ahmed Rahman presenting on sustainable practices",
-      },
-      {
-        url: "/images/sustainable-infrastructure-audience.jpg",
-        caption: "Engaged audience during the Q&A session",
-      },
-    ],
-    description:
-      "An in-depth discussion on sustainable infrastructure practices and their implementation in Bangladesh's development projects. The seminar covered topics including green construction materials, energy-efficient design principles, and environmental impact assessment methodologies.",
-    fullDescription:
-      "With the growing concern for environmental sustainability, this seminar addressed the critical need for sustainable infrastructure development in Bangladesh. Dr. Ahmed Rahman, a renowned expert in sustainable engineering, shared insights from his extensive research and practical experience in implementing eco-friendly construction practices. The session covered innovative approaches to reduce carbon footprint in construction projects, the use of locally sourced sustainable materials, and the integration of renewable energy systems in infrastructure design. Participants gained valuable knowledge about international sustainability standards and their adaptation to local contexts, making this seminar highly relevant for practicing engineers and students alike.",
-    videoUrl: "https://youtube.com/watch?v=example1",
-    objectives: [
-      "Understanding sustainable construction principles",
-      "Learning about green building materials and techniques",
-      "Exploring renewable energy integration in infrastructure",
-      "Discussing environmental impact assessment methods",
-    ],
-  },
-  {
-    id: 2,
-    title: "Earthquake Resistant Design for High-Rise Buildings",
-    date: "February 28, 2024",
-    time: "3:00 PM - 5:00 PM",
-    speaker: "Prof. Dr. Mehedi Hasan",
-    designation: "Structural Engineer & Researcher",
-    location: "Civil Engineering Auditorium",
-    attendees: 120,
-    image: "/images/earthquake-resistant-design-seminar.jpg",
-    additionalImages: [
-      {
-        url: "/images/earthquake-design-presentation.jpg",
-        caption: "Prof. Dr. Mehedi Hasan explaining seismic design principles",
-      },
-      {
-        url: "/images/earthquake-design-models.jpg",
-        caption: "Structural models demonstrating earthquake resistance",
-      },
-    ],
-    description:
-      "Exploring modern techniques and technologies for designing earthquake-resistant high-rise structures.",
-    fullDescription:
-      "This comprehensive seminar focused on the latest developments in seismic design for high-rise buildings, particularly relevant for Bangladesh's growing urban landscape. Prof. Dr. Mehedi Hasan presented cutting-edge research on base isolation systems, damping technologies, and advanced structural analysis methods. The session included case studies from recent earthquake events worldwide and their implications for building design standards in seismically active regions.",
-    videoUrl: "https://youtube.com/watch?v=example2",
-    objectives: [
-      "Understanding seismic forces and their effects on structures",
-      "Learning about modern earthquake-resistant design techniques",
-      "Exploring base isolation and damping systems",
-      "Analyzing case studies from recent seismic events",
-    ],
-  },
-  // Add more seminars as needed...
-]
+interface Seminar {
+  id: string
+  title: string
+  date: string
+  time: string | null
+  speaker: string | null
+  designation: string | null
+  location: string | null
+  attendees: number | null
+  image: string | null
+  additional_images?: { url: string; caption: string }[] | string
+  description: string | null
+  full_description: string | null
+  video_url: string | null
+  objectives?: string[]
+}
 
 interface SeminarDetailPageProps {
-  params: {
-    id: string
+  params: { id: string } | Promise<{ id: string }>
+}
+
+async function getSeminar(id: string): Promise<Seminar | null> {
+  try {
+    const base = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api"
+    // try single endpoint first
+    try {
+      const singleRes = await fetch(`${base}/seminars/${id}`, { cache: "no-store" })
+      if (singleRes.ok) return (await singleRes.json()) as Seminar
+    } catch {
+      // ignore and fallback to list fetch below
+    }
+
+    const res = await fetch(`${base}/seminars`, { cache: "no-store" })
+    if (!res.ok) return null
+    const seminars: Seminar[] = await res.json()
+    return seminars.find((s) => s.id === id) || null
+  } catch {
+    return null
   }
 }
 
 export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
-  const seminarId = Number.parseInt(params.id)
-  const seminar = seminars.find((s) => s.id === seminarId)
+  const [seminar, setSeminar] = useState<Seminar | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [id, setId] = useState<string | null>(null)
+
+  // Safely unwrap params (supports both plain object and Promise)
+  useEffect(() => {
+    let mounted = true
+
+    const resolveParams = async () => {
+      try {
+        // params might be a Promise (Next.js new behavior)
+        const p = (params as any)
+        const resolved = typeof p?.then === "function" ? await p : p
+        if (mounted) setId(resolved?.id ?? null)
+      } catch (err) {
+        if (mounted) setId(null)
+      }
+    }
+
+    resolveParams()
+
+    return () => {
+      mounted = false
+    }
+  }, [params])
+
+  useEffect(() => {
+    if (!id) return
+
+    let mounted = true
+
+    const fetchSeminar = async () => {
+      try {
+        setLoading(true)
+        const data = await getSeminar(id)
+        if (!mounted) return
+
+        if (!data) {
+          setError("Seminar not found.")
+          setSeminar(null)
+          return
+        }
+
+        // ✅ Handle additional_images parsing safely (exact snippet you asked for)
+        if (data && typeof data.additional_images === "string") {
+          try {
+            data.additional_images = JSON.parse(data.additional_images)
+          } catch {
+            data.additional_images = []
+          }
+        }
+
+        setSeminar(data)
+      } catch (err: any) {
+        setError(err?.message || "Error fetching seminar")
+      } finally {
+        if (mounted) setLoading(false)
+      }
+    }
+
+    fetchSeminar()
+
+    return () => {
+      mounted = false
+    }
+  }, [id])
+
+  // Normalized array for rendering additional images (guaranteed array)
+  const additionalImages: { url: string; caption?: string }[] = (() => {
+    if (!seminar || !seminar.additional_images) return []
+    if (Array.isArray(seminar.additional_images)) return seminar.additional_images
+    if (typeof seminar.additional_images === "string") {
+      try {
+        const parsed = JSON.parse(seminar.additional_images)
+        return Array.isArray(parsed) ? parsed : []
+      } catch {
+        return []
+      }
+    }
+    return []
+  })()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-600 text-lg">Loading seminar details...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+        <p className="text-red-500 text-lg">{error}</p>
+      </div>
+    )
+  }
 
   if (!seminar) {
+    // If fetch completed but no seminar found, show notFound page
     notFound()
   }
 
@@ -103,7 +169,8 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
           <div className="flex items-center justify-center text-gray-600 mb-6">
             <Calendar className="w-5 h-5 mr-2" />
             <span className="text-lg">
-              Date: {seminar.date} • {seminar.time}
+              Date: {seminar.date ? new Date(seminar.date).toLocaleDateString() : ""}{" "}
+              {seminar.time && `• ${seminar.time}`}
             </span>
           </div>
         </div>
@@ -124,40 +191,44 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
             <div className="mb-4 md:mb-0">
               <div className="flex items-center mb-2">
                 <User className="w-5 h-5 mr-2 text-gray-600" />
-                <span className="font-semibold text-lg">{seminar.speaker}</span>
+                <span className="font-semibold text-lg">{seminar.speaker ?? "TBA"}</span>
               </div>
-              <p className="text-gray-600 ml-7">{seminar.designation}</p>
+              <p className="text-gray-600 ml-7">{seminar.designation ?? ""}</p>
               <div className="flex items-center mt-2 ml-7">
                 <MapPin className="w-4 h-4 mr-2 text-gray-600" />
-                <span className="text-gray-600">{seminar.location}</span>
+                <span className="text-gray-600">{seminar.location ?? ""}</span>
               </div>
             </div>
-            <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white">
-              <Play className="w-5 h-5 mr-2" />
-              Watch Seminar
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </Button>
+            {seminar.video_url && (
+              <Button asChild size="lg" className="bg-red-600 hover:bg-red-700 text-white">
+                <a href={seminar.video_url} target="_blank" rel="noopener noreferrer">
+                  <Play className="w-5 h-5 mr-2" />
+                  Watch Seminar
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+            )}
           </div>
         </div>
 
         {/* Additional Images */}
-        {seminar.additionalImages && (
+        {additionalImages.length > 0 && (
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            {seminar.additionalImages.map((img, index) => (
+            {additionalImages.map((img, index) => (
               <div key={index}>
                 <img
                   src={img.url || "/placeholder.svg"}
-                  alt={img.caption}
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                  alt={img.caption || `additional-${index + 1}`}
+                  className="w-full h-auto object-cover rounded-lg shadow-md"
                 />
-                <p className="text-center text-sm text-gray-600 mt-2">{img.caption}</p>
+                {img.caption && <p className="text-center text-sm text-gray-600 mt-2">{img.caption}</p>}
               </div>
             ))}
           </div>
         )}
 
         {/* Seminar Objectives */}
-        {seminar.objectives && (
+        {seminar.objectives && seminar.objectives.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Seminar Objectives</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-700">
@@ -170,17 +241,23 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
 
         {/* Description */}
         <div className="prose max-w-none">
-          <p className="text-gray-700 leading-relaxed text-lg">{seminar.fullDescription || seminar.description}</p>
+          <p className="text-gray-700 leading-relaxed text-lg">
+            {seminar.full_description || seminar.description}
+          </p>
         </div>
 
         {/* Watch Button (Bottom) */}
-        <div className="text-center mt-12">
-          <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8">
-            <Play className="w-5 h-5 mr-2" />
-            Watch Full Seminar
-            <ExternalLink className="w-4 h-4 ml-2" />
-          </Button>
-        </div>
+        {seminar.video_url && (
+          <div className="text-center mt-12">
+            <Button asChild size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8">
+              <a href={seminar.video_url} target="_blank" rel="noopener noreferrer">
+                <Play className="w-5 h-5 mr-2" />
+                Watch Full Seminar
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

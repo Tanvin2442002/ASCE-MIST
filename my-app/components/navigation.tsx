@@ -14,15 +14,13 @@ const navigationLinks = [
   { name: "Publication", href: "/publication" },
   { name: "Committee", href: "/committee" },
   { name: "Contact", href: "/contact" },
-  { name: "Resources", href: "/resources" },
-  { name: "Links", href: "/links" },
 ]
 
 const activitiesDropdown = [
   { name: "Site Visit", href: "/activities/site-visit" },
   { name: "Seminar", href: "/activities/seminar" },
   { name: "Webinar", href: "/activities/webinar" },
-  { name: "Poster Presentation", href: "/activities/poster-presentation" },
+  { name: "Upcoming Events", href: "/activities/upcoming-events" },
   { name: "Social Events", href: "/activities/social-events" },
   { name: "Announcement", href: "/activities/announcement" },
 ]

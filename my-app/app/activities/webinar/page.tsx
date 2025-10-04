@@ -1,140 +1,44 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-// Sample webinar data
-const webinars = [
-  {
-    id: 1,
-    title: "Digital Transformation in Civil Engineering",
-    date: "March 15, 2024",
-    time: "3:00 PM - 4:30 PM",
-    speaker: "Dr. Sarah Johnson",
-    organization: "MIT Civil Engineering",
-    image: "/images/digital-transformation-webinar.jpg",
-    description:
-      "Exploring how digital technologies are revolutionizing the civil engineering industry, from BIM to AI-powered design tools.",
-  },
-  {
-    id: 2,
-    title: "Sustainable Infrastructure Development",
-    date: "February 28, 2024",
-    time: "2:00 PM - 3:30 PM",
-    speaker: "Prof. Michael Chen",
-    organization: "Stanford University",
-    image: "/images/sustainable-infrastructure-webinar.jpg",
-    description:
-      "Understanding the principles and practices of sustainable infrastructure development for a greener future.",
-  },
-  {
-    id: 3,
-    title: "Climate Resilient Design Strategies",
-    date: "February 14, 2024",
-    time: "4:00 PM - 5:30 PM",
-    speaker: "Dr. Emily Rodriguez",
-    organization: "UC Berkeley",
-    image: "/images/climate-resilient-webinar.jpg",
-    description: "Innovative approaches to designing infrastructure that can withstand climate change impacts.",
-  },
-  {
-    id: 4,
-    title: "Smart Cities and IoT Integration",
-    date: "January 30, 2024",
-    time: "3:30 PM - 5:00 PM",
-    speaker: "Dr. Ahmed Hassan",
-    organization: "BUET",
-    image: "/images/smart-cities-webinar.jpg",
-    description: "How Internet of Things (IoT) technology is transforming urban infrastructure and city management.",
-  },
-  {
-    id: 5,
-    title: "Advanced Materials in Construction",
-    date: "January 16, 2024",
-    time: "2:30 PM - 4:00 PM",
-    speaker: "Prof. Lisa Wang",
-    organization: "Harvard University",
-    image: "/images/advanced-materials-webinar.jpg",
-    description: "Exploring cutting-edge materials that are changing the landscape of modern construction.",
-  },
-  {
-    id: 6,
-    title: "Earthquake Engineering and Seismic Design",
-    date: "December 20, 2023",
-    time: "3:00 PM - 4:30 PM",
-    speaker: "Dr. Rajesh Kumar",
-    organization: "IIT Delhi",
-    image: "/images/earthquake-engineering-webinar.jpg",
-    description: "Latest developments in earthquake-resistant design and seismic analysis techniques.",
-  },
-  {
-    id: 7,
-    title: "Water Resource Management in Urban Areas",
-    date: "December 5, 2023",
-    time: "4:00 PM - 5:30 PM",
-    speaker: "Dr. Maria Santos",
-    organization: "University of São Paulo",
-    image: "/images/water-resource-webinar.jpg",
-    description: "Innovative solutions for managing water resources in rapidly growing urban environments.",
-  },
-  {
-    id: 8,
-    title: "Transportation Infrastructure Planning",
-    date: "November 22, 2023",
-    time: "2:00 PM - 3:30 PM",
-    speaker: "Prof. David Thompson",
-    organization: "Oxford University",
-    image: "/images/transportation-planning-webinar.jpg",
-    description: "Strategic approaches to planning and developing efficient transportation networks.",
-  },
-  {
-    id: 9,
-    title: "Green Building Certification Systems",
-    date: "November 8, 2023",
-    time: "3:30 PM - 5:00 PM",
-    speaker: "Dr. Jennifer Lee",
-    organization: "LEED Council",
-    image: "/images/green-building-webinar.jpg",
-    description: "Understanding various green building certification systems and their implementation.",
-  },
-  {
-    id: 10,
-    title: "Geotechnical Engineering Innovations",
-    date: "October 25, 2023",
-    time: "2:30 PM - 4:00 PM",
-    speaker: "Prof. Robert Brown",
-    organization: "Cambridge University",
-    image: "/images/geotechnical-innovations-webinar.jpg",
-    description: "Latest innovations and technologies in geotechnical engineering and soil mechanics.",
-  },
-  {
-    id: 11,
-    title: "Coastal Engineering and Sea Level Rise",
-    date: "October 10, 2023",
-    time: "3:00 PM - 4:30 PM",
-    speaker: "Dr. Anna Petrov",
-    organization: "TU Delft",
-    image: "/images/coastal-engineering-webinar.jpg",
-    description: "Addressing coastal challenges and adaptation strategies for rising sea levels.",
-  },
-  {
-    id: 12,
-    title: "Construction Project Management",
-    date: "September 28, 2023",
-    time: "4:00 PM - 5:30 PM",
-    speaker: "Prof. James Wilson",
-    organization: "Georgia Tech",
-    image: "/images/project-management-webinar.jpg",
-    description: "Best practices and modern tools for effective construction project management.",
-  },
-]
+interface Webinar {
+  id: number
+  title: string
+  date: string
+  time: string
+  speaker: string
+  organization: string
+  image: string
+  description: string
+}
 
 const ITEMS_PER_PAGE = 10
 
 export default function WebinarPage() {
+  const [webinars, setWebinars] = useState<Webinar[]>([])
+  const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
+
+  useEffect(() => {
+    const fetchWebinars = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/webinars")
+        if (!res.ok) throw new Error("Failed to fetch webinars")
+        const data = await res.json()
+        setWebinars(data)
+      } catch (error) {
+        console.error("Error fetching webinars:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchWebinars()
+  }, [])
 
   const totalPages = Math.ceil(webinars.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
@@ -144,6 +48,22 @@ export default function WebinarPage() {
   const goToPage = (page: number) => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">Loading webinars...</p>
+      </div>
+    )
+  }
+
+  if (!webinars.length) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">No webinars available.</p>
+      </div>
+    )
   }
 
   return (
@@ -158,7 +78,10 @@ export default function WebinarPage() {
 
         <div className="grid gap-8 md:gap-12">
           {currentWebinars.map((webinar) => (
-            <Card key={webinar.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white">
+            <Card
+              key={webinar.id}
+              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white"
+            >
               <CardContent className="p-0">
                 <div className="flex flex-col lg:flex-row">
                   <div className="lg:w-1/2">

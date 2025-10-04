@@ -1,188 +1,38 @@
+"use client"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 interface SiteVisit {
-  id: number
+  id: string
   title: string
   location: string
-  date: string
   description: string
-  image: string
-  participants: number
+  highlights?: string
+  learning_outcomes?: string
+  visit_date?: string
+  duration?: string
+  max_participants?: number
+  category?: string
+  status?: string
+  image_urls?: string[]
   department?: string
-  detailedDescription?: string
-  additionalImages?: { url: string; caption: string }[]
+  registration_deadline?: string
 }
 
-const siteVisits: SiteVisit[] = [
-  {
-    id: 1,
-    title: "Educational Visit to Padma Multipurpose Bridge",
-    location: "Padma Bridge, Bangladesh",
-    date: "December 15, 2022",
-    description:
-      "Students from the Civil Engineering department visited the iconic Padma Multipurpose Bridge to understand the engineering marvels and construction techniques used in this mega infrastructure project.",
-    image: "/images/padma-bridge-visit.png",
-    participants: 45,
-    department: "Civil Engineering",
-    detailedDescription:
-      "With the support of Department of Civil Engineering MIST, ASCE Student Chapter, MIST arranged three field tours to the Padma Multipurpose Bridge for general students of MIST. The program was overseen by the Honorable Project Director, Faculty Advisor, Teachers, and ASCE Student Body.",
-    additionalImages: [
-      {
-        url: "/images/padma-bridge-professor.jpg",
-        caption: "Professor Dr. Khan Mahmud Amanat Sir answering queries of students.",
-      },
-      {
-        url: "/images/padma-bridge-students.jpg",
-        caption: "Students Visiting Padma Multipurpose Bridge",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Educational field visit to Hazrat Shahjalal International Airport Expansion Project",
-    location: "Hazrat Shahjalal International Airport, Dhaka",
-    date: "November 28, 2022",
-    description:
-      "A comprehensive site visit to observe the ongoing expansion project Phase-1 by Batch 18 to Batch 22 students, focusing on modern airport infrastructure and construction management.",
-    image: "/airport-construction-site-with-students-in-safety-.jpg",
-    participants: 38,
-    department: "Civil Engineering",
-    detailedDescription:
-      "The visit provided students with insights into large-scale infrastructure development, airport engineering principles, and project management techniques used in international airport construction projects.",
-  },
-  {
-    id: 3,
-    title: "Metro Rail Construction Site Visit",
-    location: "Dhaka Metro Rail Project, Dhaka",
-    date: "October 20, 2022",
-    description:
-      "Students explored the construction techniques and engineering challenges involved in building Bangladesh's first metro rail system.",
-    image: "/metro-rail-construction-site-with-engineering-stud.jpg",
-    participants: 32,
-    department: "Civil Engineering",
-    detailedDescription:
-      "This educational visit allowed students to observe advanced tunneling techniques, station construction methods, and the integration of modern transportation systems in urban environments.",
-  },
-  {
-    id: 4,
-    title: "Karnaphuli Tunnel Project Visit",
-    location: "Karnaphuli Tunnel, Chittagong",
-    date: "September 15, 2022",
-    description:
-      "An educational tour to understand underwater tunnel construction technology and the engineering solutions implemented in this groundbreaking project.",
-    image: "/underwater-tunnel-construction-with-engineering-st.jpg",
-    participants: 28,
-    department: "Civil Engineering",
-    detailedDescription:
-      "Students gained valuable insights into underwater construction challenges, tunnel boring machine operations, and the complex engineering solutions required for subaqueous infrastructure projects.",
-  },
-  {
-    id: 5,
-    title: "Rooppur Nuclear Power Plant Site Visit",
-    location: "Rooppur Nuclear Power Plant, Pabna",
-    date: "August 25, 2022",
-    description:
-      "Students visited the construction site of Bangladesh's first nuclear power plant to learn about nuclear engineering and safety protocols.",
-    image: "/nuclear-power-plant-construction-site-with-student.jpg",
-    participants: 25,
-    department: "Nuclear Engineering",
-    detailedDescription:
-      "The visit provided comprehensive understanding of nuclear power plant construction, safety systems, and the role of nuclear energy in Bangladesh's future energy security.",
-  },
-  {
-    id: 6,
-    title: "Dhaka Elevated Expressway Construction Visit",
-    location: "Dhaka Elevated Expressway, Dhaka",
-    date: "July 18, 2022",
-    description:
-      "An insightful visit to observe the construction of the elevated expressway and understand urban infrastructure development challenges.",
-    image: "/elevated-expressway-construction-with-civil-engine.jpg",
-    participants: 35,
-    department: "Civil Engineering",
-    detailedDescription:
-      "Students observed advanced construction techniques for elevated structures, traffic management during construction, and the integration of modern expressways in dense urban environments.",
-  },
-  {
-    id: 7,
-    title: "Bangabandhu Sheikh Mujib Railway Bridge Visit",
-    location: "Jamuna River, Tangail",
-    date: "June 22, 2022",
-    description:
-      "Students explored the engineering aspects of the dual-gauge railway bridge and its significance in Bangladesh's transportation network.",
-    image: "/railway-bridge-construction-over-river-with-studen.jpg",
-    participants: 30,
-    department: "Civil Engineering",
-    detailedDescription:
-      "The visit highlighted the engineering challenges of constructing railway bridges over major rivers, dual-gauge track systems, and the strategic importance of rail connectivity in national development.",
-  },
-  {
-    id: 8,
-    title: "Matarbari Deep Sea Port Project Visit",
-    location: "Matarbari, Cox's Bazar",
-    date: "May 28, 2022",
-    description:
-      "A field visit to understand port engineering, marine construction techniques, and the strategic importance of deep sea ports.",
-    image: "/deep-sea-port-construction-with-marine-engineering.jpg",
-    participants: 22,
-    department: "Naval Architecture & Marine Engineering",
-    detailedDescription:
-      "Students gained insights into marine construction challenges, port design principles, and the economic significance of deep sea ports in international trade and commerce.",
-  },
-  {
-    id: 9,
-    title: "Dhaka Water Treatment Plant Visit",
-    location: "Saidabad Water Treatment Plant, Dhaka",
-    date: "April 15, 2022",
-    description:
-      "Students learned about water treatment processes, environmental engineering principles, and sustainable water management practices.",
-    image: "/water-treatment-plant-with-environmental-engineeri.jpg",
-    participants: 40,
-    department: "Environmental Engineering",
-    detailedDescription:
-      "The visit provided comprehensive understanding of water purification processes, environmental impact assessment, and the critical role of water treatment in public health and environmental sustainability.",
-  },
-  {
-    id: 10,
-    title: "Bangabandhu Satellite Ground Station Visit",
-    location: "Gazipur, Dhaka",
-    date: "March 20, 2022",
-    description: "An educational visit to understand satellite communication technology and ground station operations.",
-    image: "/satellite-ground-station-with-telecommunications-s.jpg",
-    participants: 18,
-    department: "Electrical & Electronic Engineering",
-    detailedDescription:
-      "Students explored satellite communication systems, ground station equipment, and the role of space technology in modern telecommunications and broadcasting.",
-  },
-  {
-    id: 11,
-    title: "Dhaka-Chittagong Highway Expansion Project",
-    location: "Dhaka-Chittagong Highway",
-    date: "February 25, 2022",
-    description:
-      "Students observed highway construction techniques, traffic engineering solutions, and infrastructure development strategies.",
-    image: "/highway-construction-project-with-transportation-e.jpg",
-    participants: 33,
-    department: "Civil Engineering",
-    detailedDescription:
-      "The visit demonstrated modern highway construction methods, traffic management systems, and the economic impact of improved transportation infrastructure on national development.",
-  },
-  {
-    id: 12,
-    title: "Payra Seaport Development Project Visit",
-    location: "Payra Port, Patuakhali",
-    date: "January 30, 2022",
-    description:
-      "A comprehensive site visit to understand seaport development, coastal engineering, and maritime infrastructure.",
-    image: "/seaport-development-construction-with-coastal-engi.jpg",
-    participants: 26,
-    department: "Civil Engineering",
-    detailedDescription:
-      "Students learned about coastal engineering challenges, port development strategies, and the role of seaports in facilitating international trade and economic growth.",
-  },
-]
+// Fetch a single site visit by ID from backend
+async function getSiteVisitById(id: string): Promise<SiteVisit | null> {
+  try {
+    const res = await fetch(`http://localhost:5000/api/site-visits/${id}`, { cache: "no-store" })
+    if (!res.ok) return null
+    return await res.json()
+  } catch {
+    return null
+  }
+}
 
 interface PageProps {
   params: {
@@ -191,78 +41,194 @@ interface PageProps {
 }
 
 export default function SiteVisitDetailPage({ params }: PageProps) {
-  const visitId = Number.parseInt(params.id)
-  const visit = siteVisits.find((v) => v.id === visitId)
+  const [visit, setVisit] = useState<SiteVisit | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  if (!visit) {
-    notFound()
+  useEffect(() => {
+    const fetchVisit = async () => {
+      try {
+        const data = await getSiteVisitById(params.id)
+        if (!data) {
+          setError("Site visit not found.")
+          return
+        }
+        setVisit(data)
+      } catch (err: any) {
+        setError(err?.message || "Error fetching site visit")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchVisit()
+  }, [params.id])
+
+  const images = visit?.image_urls || []
+
+  const formatDate = (d?: string) => {
+    if (!d) return "TBA"
+    try {
+      return new Date(d).toLocaleDateString()
+    } catch {
+      return d
+    }
+  }
+
+  const Img = ({ src, alt }: { src: string; alt?: string }) => (
+    <div className="w-full h-64 md:h-80 overflow-hidden rounded-lg shadow-sm">
+      <img
+        src={src}
+        alt={alt || ""}
+        className="w-full h-full object-cover"
+        style={{ objectPosition: "50% 70%" }}
+      />
+    </div>
+  )
+
+  const renderList = (text?: string) => {
+    if (!text) return null
+    // support both \r\n and \n
+    return (
+      <ul className="list-disc pl-5 space-y-1 text-gray-700">
+        {text.split(/\r?\n/).map(
+          (line, idx) =>
+            line.trim() && (
+              <li key={idx} className="leading-relaxed">
+                {line}
+              </li>
+            )
+        )}
+      </ul>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-600 text-lg">Loading site visit details...</p>
+      </div>
+    )
+  }
+  if(!visit || error) {
+    return notFound()
   }
 
   return (
-    <div className="bg-gray-50">
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Back Button */}
-        <div className="mb-6">
+    <div className="bg-gray-50 py-8">
+      <main className="container mx-auto px-4 max-w-5xl space-y-8">
+        {/* Back */}
+        <div>
           <Link href="/activities/site-visit">
-            <Button variant="outline" className="flex items-center gap-2 bg-transparent">
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 bg-transparent"
+            >
               <ArrowLeft className="h-4 w-4" />
               Back to Site Visits
             </Button>
           </Link>
         </div>
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-balance">Field Visit: {visit.title}</h1>
-          <p className="text-gray-600 text-lg">Date: {visit.date}</p>
-        </div>
-
-        {/* Main Image */}
-        <div className="mb-8">
-          <div className="relative">
-            <img
-              src={visit.image || "/placeholder.svg"}
-              alt={visit.title}
-              className="w-full h-96 object-cover rounded-lg shadow-lg"
-            />
-            <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded text-sm">
-              At site visit students and faculty members
+        {/* Title card */}
+        <Card>
+          <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                {visit.title}
+              </h1>
+              <p className="text-gray-600 mt-1">{visit.location}</p>
             </div>
-          </div>
-        </div>
-
-        {/* Additional Images */}
-        {visit.additionalImages && visit.additionalImages.length > 0 && (
-          <div className="mb-8">
-            <div className="grid md:grid-cols-2 gap-4">
-              {visit.additionalImages.map((img, index) => (
-                <div key={index} className="relative">
-                  <img
-                    src={img.url || "/placeholder.svg"}
-                    alt={img.caption}
-                    className="w-full h-64 object-cover rounded-lg shadow-md"
-                  />
-                  <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded text-sm">
-                    {img.caption}
-                  </div>
+            <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+              <div className="text-sm text-gray-600 space-y-1">
+                <div>
+                  <span className="font-medium text-gray-800">Date:</span>{" "}
+                  {formatDate(visit.visit_date)}
                 </div>
-              ))}
+                {visit.duration && (
+                  <div>
+                    <span className="font-medium text-gray-800">Duration:</span>{" "}
+                    {visit.duration}
+                  </div>
+                )}
+                <div>
+                  <span className="font-medium text-gray-800">
+                    Participants:
+                  </span>{" "}
+                  {visit.max_participants ?? "N/A"}
+                </div>
+                {visit.category && (
+                  <div>
+                    <span className="font-medium text-gray-800">Category:</span>{" "}
+                    {visit.category}
+                  </div>
+                )}
+                {visit.registration_deadline && (
+                  <div>
+                    <span className="font-medium text-gray-800">
+                      Registration Deadline:
+                    </span>{" "}
+                    {new Date(
+                      visit.registration_deadline
+                    ).toLocaleDateString()}
+                  </div>
+                )}
+                {visit.status && (
+                  <div>
+                    <span className="font-medium text-gray-800">Status:</span>{" "}
+                    {visit.status}
+                  </div>
+                )}
+              </div>
+              {visit.department && (
+                <span className="inline-block mt-2 sm:mt-0 bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
+                  {visit.department}
+                </span>
+              )}
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Images grid */}
+        {images.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-2">
+              <Img src={images[0]} alt={`${visit.title} - main`} />
+            </div>
+            {images[1] && <Img src={images[1]} alt={`${visit.title} - 2`} />}
+            {images[2] && <Img src={images[2]} alt={`${visit.title} - 3`} />}
           </div>
         )}
 
-        {/* Description */}
-        <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
-          <p className="text-gray-700 leading-relaxed text-lg text-pretty">
-            {visit.detailedDescription || visit.description}
-          </p>
+        {/* Info cards */}
+        <div className="grid grid-cols-1 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Description</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                {visit.description}
+              </p>
+            </CardContent>
+          </Card>
 
-          {visit.department && (
-            <div className="mt-6">
-              <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                {visit.department}
-              </span>
-            </div>
+          {visit.highlights && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Highlights</CardTitle>
+              </CardHeader>
+              <CardContent>{renderList(visit.highlights)}</CardContent>
+            </Card>
+          )}
+
+          {visit.learning_outcomes && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Learning Outcomes</CardTitle>
+              </CardHeader>
+              <CardContent>{renderList(visit.learning_outcomes)}</CardContent>
+            </Card>
           )}
         </div>
       </main>

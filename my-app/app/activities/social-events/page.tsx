@@ -1,127 +1,33 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-// Sample social events data
-const socialEvents = [
-  {
-    id: 1,
-    title: "ASCE Annual Picnic 2024",
-    date: "May 15, 2024",
-    location: "Savar Lake Resort",
-    type: "Recreation",
-    image: "/images/annual-picnic-2024.jpg",
-    description: "A fun-filled day of outdoor activities, games, and bonding for all ASCE members and their families.",
-  },
-  {
-    id: 2,
-    title: "Engineering Excellence Awards Ceremony",
-    date: "April 30, 2024",
-    location: "MIST Auditorium",
-    type: "Awards",
-    image: "/images/awards-ceremony-2024.jpg",
-    description: "Recognizing outstanding achievements and contributions of students and faculty in civil engineering.",
-  },
-  {
-    id: 3,
-    title: "Cultural Night: Engineering Talent Show",
-    date: "April 12, 2024",
-    location: "MIST Cultural Center",
-    type: "Cultural",
-    image: "/images/cultural-night-2024.jpg",
-    description:
-      "Showcasing the artistic talents of engineering students through music, dance, and drama performances.",
-  },
-  {
-    id: 4,
-    title: "ASCE Sports Tournament",
-    date: "March 25, 2024",
-    location: "MIST Sports Complex",
-    type: "Sports",
-    image: "/images/sports-tournament-2024.jpg",
-    description: "Inter-departmental sports competition featuring cricket, football, badminton, and table tennis.",
-  },
-  {
-    id: 5,
-    title: "Welcome Ceremony for New Members",
-    date: "March 10, 2024",
-    location: "MIST Conference Hall",
-    type: "Welcome",
-    image: "/images/welcome-ceremony-2024.jpg",
-    description: "Formal induction ceremony for new ASCE student chapter members with networking opportunities.",
-  },
-  {
-    id: 6,
-    title: "Engineering Career Fair Networking Dinner",
-    date: "February 20, 2024",
-    location: "Dhaka Regency Hotel",
-    type: "Networking",
-    image: "/images/career-fair-dinner-2024.jpg",
-    description: "Networking dinner connecting students with industry professionals and potential employers.",
-  },
-  {
-    id: 7,
-    title: "Valentine's Day Engineering Couples Contest",
-    date: "February 14, 2024",
-    location: "MIST Campus Garden",
-    type: "Celebration",
-    image: "/images/valentines-contest-2024.jpg",
-    description: "Fun competition for engineering couples with creative challenges and romantic activities.",
-  },
-  {
-    id: 8,
-    title: "Winter Retreat: Team Building Workshop",
-    date: "January 28, 2024",
-    location: "Cox's Bazar",
-    type: "Retreat",
-    image: "/images/winter-retreat-2024.jpg",
-    description: "Three-day retreat focusing on leadership development, team building, and strategic planning.",
-  },
-  {
-    id: 9,
-    title: "New Year Celebration Gala",
-    date: "January 1, 2024",
-    location: "MIST Auditorium",
-    type: "Celebration",
-    image: "/images/new-year-gala-2024.jpg",
-    description: "Grand celebration welcoming the new year with performances, dinner, and networking.",
-  },
-  {
-    id: 10,
-    title: "Alumni Homecoming Reunion",
-    date: "December 15, 2023",
-    location: "MIST Alumni Center",
-    type: "Alumni",
-    image: "/images/alumni-reunion-2023.jpg",
-    description: "Annual reunion bringing together ASCE alumni from different graduating classes.",
-  },
-  {
-    id: 11,
-    title: "Charity Drive: Building Homes for the Needy",
-    date: "November 25, 2023",
-    location: "Rural Manikganj",
-    type: "Community Service",
-    image: "/images/charity-drive-2023.jpg",
-    description: "Community service project building homes for underprivileged families in rural areas.",
-  },
-  {
-    id: 12,
-    title: "Freshers' Orientation and Ice Breaking",
-    date: "October 20, 2023",
-    location: "MIST Campus",
-    type: "Orientation",
-    image: "/images/freshers-orientation-2023.jpg",
-    description: "Orientation program for new students with ice-breaking activities and campus tour.",
-  },
-]
-
 const ITEMS_PER_PAGE = 10
 
 export default function SocialEventsPage() {
+  const [socialEvents, setSocialEvents] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/events")
+        if (!res.ok) throw new Error("Failed to fetch events")
+        const data = await res.json()
+        setSocialEvents(data)
+      } catch (err: any) {
+        setError(err.message || "Error fetching events")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchEvents()
+  }, [])
 
   const totalPages = Math.ceil(socialEvents.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
@@ -131,6 +37,22 @@ export default function SocialEventsPage() {
   const goToPage = (page: number) => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-gray-600 text-lg">Loading events...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-red-500 text-lg">{error}</p>
+      </div>
+    )
   }
 
   return (

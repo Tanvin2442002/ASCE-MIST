@@ -1,16 +1,63 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Users, Award, BookOpen, MapPin, Mail, Phone, ExternalLink } from "lucide-react"
-import Navigation from "@/components/navigation"
-import { LampContainer } from "@/components/lamp-container"
-import { FloatingBlobs, CurvyDivider } from "@/components/organic-shape"
-import { motion } from "framer-motion"
-import Footer from "@/components/footer"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import {
+  Calendar,
+  Users,
+  Award,
+  BookOpen,
+  MapPin,
+  Mail,
+  Phone,
+  ExternalLink,
+} from "lucide-react";
+import Navigation from "@/components/navigation";
+import { LampContainer } from "@/components/lamp-container";
+import { FloatingBlobs, CurvyDivider } from "@/components/organic-shape";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import Footer from "@/components/footer";
 
 export default function HomePage() {
+  const [announcements, setAnnouncements] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAnnouncements() {
+      setLoading(true);
+      try {
+        const res = await fetch("http://localhost:5000/api/announcements");
+        const data = await res.json();
+        setAnnouncements(data);
+      } catch (err) {
+        setAnnouncements([]);
+      }
+      setLoading(false);
+    }
+    async function fetchevents() {
+      setLoading(true);
+      try {
+        const res = await fetch("http://localhost:5000/api/upcoming-events");
+        const data = await res.json();
+        setEvents(data);
+      } catch (err) {
+        setEvents([]);
+      }
+      setLoading(false);
+    }
+    fetchAnnouncements();
+    fetchevents();
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation Component */}
@@ -42,12 +89,16 @@ export default function HomePage() {
             Building Leaders in <br /> Civil Engineering
           </h1>
           <p className="text-xl text-white mb-8 text-pretty max-w-2xl mx-auto drop-shadow-lg bg-black/20 backdrop-blur-sm rounded-lg p-6">
-            Join the ASCE Student Chapter at Military Institute of Science and Technology (MIST), Bangladesh. Connect
-            with professionals, engage in research, and shape the future of civil engineering from our state-of-the-art
-            campus.
+            Join the ASCE Student Chapter at Military Institute of Science and
+            Technology (MIST), Bangladesh. Connect with professionals, engage in
+            research, and shape the future of civil engineering from our
+            state-of-the-art campus.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 shadow-2xl font-semibold">
+            <Button
+              size="lg"
+              className="bg-white text-primary hover:bg-white/90 shadow-2xl font-semibold"
+            >
               Join Our Chapter
             </Button>
             <Button
@@ -64,8 +115,10 @@ export default function HomePage() {
       <CurvyDivider className="text-primary -mt-1" />
 
       {/* Announcements Section */}
-      <section id="announcements" className="py-16 bg-muted/20 relative overflow-hidden">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-3xl animate-blob" />
+      <section
+        id="announcements"
+        className="py-16 bg-muted/20 relative overflow-hidden"
+      >
         <div className="container mx-auto px-4 relative z-10">
           <motion.h2
             className="text-3xl font-bold text-center text-foreground mb-4"
@@ -81,103 +134,84 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            Stay updated with the latest news, achievements, and important updates from our ASCE chapter
+            Stay updated with the latest news, achievements, and important
+            updates from our ASCE chapter
           </motion.p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                type: "Achievement",
-                date: "Dec 8, 2024",
-                title: "MIST Team Wins National Bridge Competition",
-                desc: "Our student team secured first place in the Bangladesh National Bridge Design Competition with their innovative sustainable design approach.",
-                image: "/engineering-students-celebrating-with-trophy-at-br.jpg",
-                priority: true,
-              },
-              {
-                type: "Research",
-                date: "Nov 28, 2024",
-                title: "New Research Lab Opens at MIST",
-                desc: "State-of-the-art Structural Engineering Research Laboratory inaugurated with advanced testing equipment and simulation capabilities.",
-                image: "/modern-engineering-laboratory-with-testing-equipme.jpg",
-                priority: false,
-              },
-              {
-                type: "Partnership",
-                date: "Nov 15, 2024",
-                title: "Industry Partnership with Leading Construction Firm",
-                desc: "ASCE @ MIST announces strategic partnership with Bangladesh's top construction company for internships and research collaboration.",
-                image: "/professional-handshake-between-university-and-indu.jpg",
-                priority: false,
-              },
-            ].map((announcement, index) => (
-              <motion.div
-                key={announcement.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="h-full"
-              >
-                <Card className="hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-card/90 backdrop-blur-sm border-border/50 overflow-hidden group h-full flex flex-col">
-                  <div className="aspect-video overflow-hidden flex-shrink-0">
-                    <img
-                      src={announcement.image || "/placeholder.svg"}
-                      alt={announcement.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <CardHeader className="pb-3 flex-shrink-0">
-                    <div className="flex items-center justify-between mb-3">
-                      <Badge
-                        variant={announcement.priority ? "default" : "secondary"}
-                        className={
-                          announcement.priority
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-accent/20 text-accent-foreground border-accent/30"
+          {loading ? (
+            <div className="text-center py-12">Loading...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {announcements.slice(0, 3).map((announcement, index) => (
+                <motion.div
+                  key={announcement.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="h-full"
+                >
+                  <Card className="hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-card/90 backdrop-blur-sm border-border/50 overflow-hidden group h-full flex flex-col">
+                    <div className="aspect-video overflow-hidden flex-shrink-0">
+                      <img
+                        src={
+                          Array.isArray(announcement.image_url)
+                            ? announcement.image_url[0]
+                            : announcement.image_url || "/placeholder.svg"
+                        }
+                        alt={announcement.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <CardHeader className="pb-3 flex-shrink-0">
+                      <div className="flex items-center justify-between mb-3">
+                        <Badge
+                          variant={
+                            announcement.priority === "high"
+                              ? "default"
+                              : "secondary"
+                          }
+                          className={
+                            announcement.priority === "high"
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-accent/20 text-accent-foreground border-accent/30"
+                          }
+                        >
+                          {announcement.status || "Announcement"}
+                        </Badge>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          {announcement.created_at
+                            ? new Date(
+                                announcement.created_at
+                              ).toLocaleDateString()
+                            : ""}
+                        </div>
+                      </div>
+                      <CardTitle className="text-card-foreground text-balance leading-tight group-hover:text-primary transition-colors">
+                        {announcement.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                      <CardDescription className="text-pretty mb-4 leading-relaxed flex-1">
+                        {/* Optionally show a short preview, or remove this line if you don't want description */}
+                        {announcement.description?.slice(0, 120)}...
+                      </CardDescription>
+                      <Button
+                        variant="outline"
+                        className="w-full border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-200 bg-transparent mt-auto"
+                        onClick={() =>
+                          (window.location.href = `/activities/announcement/${announcement.id}`)
                         }
                       >
-                        {announcement.type}
-                      </Badge>
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {announcement.date}
-                      </div>
-                    </div>
-                    <CardTitle className="text-card-foreground text-balance leading-tight group-hover:text-primary transition-colors">
-                      {announcement.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0 flex-1 flex flex-col justify-between">
-                    <CardDescription className="text-pretty mb-4 leading-relaxed flex-1">
-                      {announcement.desc}
-                    </CardDescription>
-                    <Button
-                      variant="outline"
-                      className="w-full border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-200 bg-transparent mt-auto"
-                    >
-                      Read Full Story
-                      <ExternalLink className="w-4 h-4 ml-2" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
-            >
-              View All Announcements
-            </Button>
-          </motion.div>
+                        Read Full Story
+                        <ExternalLink className="w-4 h-4 ml-2" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -200,9 +234,11 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              The American Society of Civil Engineers (ASCE) is the world&apos;s oldest national engineering society. Our
-              student chapter at MIST focuses on professional development, networking, research opportunities, and
-              preparing the next generation of civil engineering leaders in Bangladesh.
+              The American Society of Civil Engineers (ASCE) is the world&apos;s
+              oldest national engineering society. Our student chapter at MIST
+              focuses on professional development, networking, research
+              opportunities, and preparing the next generation of civil
+              engineering leaders in Bangladesh.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -231,28 +267,56 @@ export default function HomePage() {
           >
             Quick Access
           </motion.h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Calendar, title: "Upcoming Events", desc: "Seminars, workshops, and competitions" },
-              { icon: BookOpen, title: "Projects & Research", desc: "Ongoing research and student projects" },
-              { icon: Users, title: "Membership", desc: "Join our growing community" },
-              { icon: Award, title: "News & Updates", desc: "Latest achievements and announcements" },
-            ].map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 border-border/50 bg-card/80 backdrop-blur-sm">
-                  <CardHeader className="text-center">
-                    <item.icon className="w-12 h-12 text-primary mx-auto mb-4" />
-                    <CardTitle className="text-card-foreground">{item.title}</CardTitle>
-                    <CardDescription>{item.desc}</CardDescription>
-                  </CardHeader>
-                </Card>
-              </motion.div>
-            ))}
+              {
+                href: "/activities/upcoming-events",
+                icon: Calendar,
+                title: "Upcoming Events",
+                desc: "Seminars, workshops, and competitions",
+              },
+              {
+                href: "/publication",
+                icon: BookOpen,
+                title: "Projects & Research",
+                desc: "Ongoing research and student projects",
+              },
+              {
+                href: "/membership",
+                icon: Users,
+                title: "Membership",
+                desc: "Join our growing community",
+              },
+              {
+                href: "/activities/announcement",
+                icon: Award,
+                title: "News & Updates",
+                desc: "Latest achievements and announcements",
+              },
+            ].map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <Link href={item.href}>
+                    <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 border-border/50 bg-card/80 backdrop-blur-sm">
+                      <CardHeader className="text-center">
+                        <Icon className="w-12 h-12 text-primary mx-auto mb-4" />
+                        <CardTitle className="text-card-foreground">
+                          {item.title}
+                        </CardTitle>
+                        <CardDescription>{item.desc}</CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -260,7 +324,10 @@ export default function HomePage() {
       <CurvyDivider className="text-card rotate-180" />
 
       {/* Events Section */}
-      <section id="events" className="py-16 bg-card/30 relative overflow-hidden">
+      <section
+        id="events"
+        className="py-16 bg-card/30 relative overflow-hidden"
+      >
         <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-2xl animate-blob" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.h2
@@ -271,52 +338,85 @@ export default function HomePage() {
           >
             Upcoming Events
           </motion.h2>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                type: "Workshop",
-                date: "Dec 15, 2024",
-                title: "Structural Design Workshop",
-                desc: "Learn advanced structural design principles with industry experts",
-              },
-              {
-                type: "Competition",
-                date: "Jan 20, 2025",
-                title: "Bridge Design Competition",
-                desc: "Annual student competition for innovative bridge designs",
-              },
-              {
-                type: "Seminar",
-                date: "Feb 5, 2025",
-                title: "Sustainable Infrastructure",
-                desc: "Exploring green building practices and sustainable development",
-              },
-            ].map((event, index) => (
+            {events.map((event, index) => (
               <motion.div
-                key={event.title}
+                key={event.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="h-full"
               >
-                <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur-sm h-full flex flex-col">
-                  <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 rounded-t-lg flex-shrink-0"></div>
-                  <CardHeader className="flex-shrink-0">
-                    <div className="flex items-center justify-between">
-                      <Badge variant="secondary" className="bg-accent text-accent-foreground">
-                        {event.type}
-                      </Badge>
-                      <span className="text-sm text-muted-foreground">{event.date}</span>
-                    </div>
-                    <CardTitle className="text-card-foreground">{event.title}</CardTitle>
-                    <CardDescription className="flex-1">{event.desc}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="mt-auto">
-                    <Button className="w-full bg-primary hover:bg-primary/90">
-                      {event.type === "Competition" ? "Learn More" : "Register Now"}
-                    </Button>
-                  </CardContent>
-                </Card>
+                {/* Link with className (no passHref / legacyBehavior) */}
+                <Link href={`activities/upcoming-events/${event.id}`}>
+                  <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur-sm h-full flex flex-col cursor-pointer">
+                    {event.image ? (
+                      <div
+                        className="aspect-video bg-cover bg-center rounded-t-lg flex-shrink-0"
+                        style={{ backgroundImage: `url(${event.image})` }}
+                      />
+                    ) : (
+                      <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 rounded-t-lg flex-shrink-0" />
+                    )}
+
+                    <CardHeader className="flex-shrink-0">
+                      <div className="flex items-center justify-between mb-2">
+                        {event.category && (
+                          <Badge
+                            variant="secondary"
+                            className="bg-accent text-accent-foreground"
+                          >
+                            {event.category}
+                          </Badge>
+                        )}
+
+                        <span className="text-sm text-muted-foreground">
+                          {event.date
+                            ? new Date(event.date).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              })
+                            : ""}
+                          {event.time ? ` • ${event.time}` : ""}
+                        </span>
+                      </div>
+
+                      <CardTitle className="text-card-foreground">
+                        {event.title}
+                      </CardTitle>
+
+                      <CardDescription className="flex-1 text-gray-600">
+                        {event.description}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="mt-auto">
+                      {event.registration_link ? (
+                        /* stopPropagation so Register opens the external link and doesn't trigger card navigation */
+                        <a
+                          href={event.registration_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Button className="w-full bg-primary hover:bg-primary/90">
+                            Register Now
+                          </Button>
+                        </a>
+                      ) : (
+                        <Button
+                          disabled
+                          className="w-full bg-gray-400 cursor-not-allowed"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          No Registration
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -361,7 +461,9 @@ export default function HomePage() {
                       <item.icon className="w-4 h-4 text-primary-foreground" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                      <h3 className="font-semibold text-foreground mb-2">
+                        {item.title}
+                      </h3>
                       <p className="text-muted-foreground">{item.desc}</p>
                     </div>
                   </motion.div>
@@ -392,7 +494,9 @@ export default function HomePage() {
                       <item.icon className="w-4 h-4 text-primary-foreground" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                      <h3 className="font-semibold text-foreground mb-2">
+                        {item.title}
+                      </h3>
                       <p className="text-muted-foreground">{item.desc}</p>
                     </div>
                   </motion.div>
@@ -406,7 +510,11 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button
+                size="lg"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground"
+                onClick={() => (window.location.href = "/membership")}
+              >
                 Become a Member Today
               </Button>
             </motion.div>
@@ -417,7 +525,9 @@ export default function HomePage() {
       {/* Gallery Section */}
       <section id="gallery" className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-foreground mb-12">Gallery</h2>
+          <h2 className="text-3xl font-bold text-center text-foreground mb-12">
+            Gallery
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
@@ -436,23 +546,30 @@ export default function HomePage() {
       {/* Testimonials */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-foreground mb-12">What Our Members Say</h2>
+          <h2 className="text-3xl font-bold text-center text-foreground mb-12">
+            What Our Members Say
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card className="h-full flex flex-col">
               <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
-                  &quot;Being part of ASCE @ MIST has opened doors to incredible networking opportunities and helped me grow
-                  as a future civil engineer.&quot;
+                  &quot;Being part of ASCE @ MIST has opened doors to incredible
+                  networking opportunities and helped me grow as a future civil
+                  engineer.&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent className="mt-auto">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground font-semibold">SA</span>
+                    <span className="text-primary-foreground font-semibold">
+                      SA
+                    </span>
                   </div>
                   <div>
                     <p className="font-semibold text-foreground">Sarah Ahmed</p>
-                    <p className="text-sm text-muted-foreground">Chapter President</p>
+                    <p className="text-sm text-muted-foreground">
+                      Chapter President
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -461,18 +578,25 @@ export default function HomePage() {
             <Card className="h-full flex flex-col">
               <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
-                  &quot;The competitions and workshops have enhanced my technical skills and prepared me for real-world
-                  engineering challenges.&quot;
+                  &quot;The competitions and workshops have enhanced my
+                  technical skills and prepared me for real-world engineering
+                  challenges.&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent className="mt-auto">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground font-semibold">AH</span>
+                    <span className="text-primary-foreground font-semibold">
+                      AH
+                    </span>
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">Ahmed Hassan</p>
-                    <p className="text-sm text-muted-foreground">Student Member</p>
+                    <p className="font-semibold text-foreground">
+                      Ahmed Hassan
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Student Member
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -481,18 +605,25 @@ export default function HomePage() {
             <Card className="h-full flex flex-col">
               <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
-                  &quot;The research opportunities and mentorship from faculty advisors have been invaluable for my academic
-                  and professional development.&quot;
+                  &quot;The research opportunities and mentorship from faculty
+                  advisors have been invaluable for my academic and professional
+                  development.&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent className="mt-auto">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground font-semibold">MR</span>
+                    <span className="text-primary-foreground font-semibold">
+                      MR
+                    </span>
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">Dr. Mohammad Rahman</p>
-                    <p className="text-sm text-muted-foreground">Faculty Advisor</p>
+                    <p className="font-semibold text-foreground">
+                      Dr. Mohammad Rahman
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Faculty Advisor
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -504,5 +635,5 @@ export default function HomePage() {
       {/* Footer */}
       {/* <Footer /> */}
     </div>
-  )
+  );
 }

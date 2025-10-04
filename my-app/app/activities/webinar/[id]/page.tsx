@@ -1,37 +1,26 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-// Sample webinar data (same as in main page)
-const webinars = [
-  {
-    id: 1,
-    title: "Digital Transformation in Civil Engineering",
-    date: "March 15, 2024",
-    time: "3:00 PM - 4:30 PM",
-    speaker: "Dr. Sarah Johnson",
-    organization: "MIT Civil Engineering",
-    image: "/images/digital-transformation-webinar.jpg",
-    speakerImage: "/images/digital-transformation-speaker.jpg",
-    audienceImage: "/images/digital-transformation-audience.jpg",
-    description:
-      "Exploring how digital technologies are revolutionizing the civil engineering industry, from BIM to AI-powered design tools.",
-    fullDescription:
-      "This comprehensive webinar explored the transformative impact of digital technologies on civil engineering practices. Dr. Sarah Johnson from MIT Civil Engineering presented cutting-edge research on Building Information Modeling (BIM), artificial intelligence applications in structural design, and the integration of IoT sensors in infrastructure monitoring. The session covered practical implementation strategies for engineering firms looking to embrace digital transformation, including case studies from major infrastructure projects that have successfully integrated these technologies. Participants gained insights into the future of civil engineering practice and the skills needed to thrive in an increasingly digital landscape.",
-    objectives: [
-      "Understanding the current state of digital transformation in civil engineering",
-      "Learning about BIM implementation and its benefits",
-      "Exploring AI applications in structural design and analysis",
-      "Discovering IoT integration for infrastructure monitoring",
-      "Developing strategies for digital adoption in engineering firms",
-    ],
-    videoUrl: "https://example.com/webinar-video-1",
-  },
-  // Add more webinar data as needed...
-]
+interface Webinar {
+  id: number
+  title: string
+  date: string
+  time: string
+  speaker: string
+  organization: string
+  image: string
+  speakerImage: string
+  audienceImage: string
+  description: string
+  fullDescription: string
+  objectives: string[]
+  videoUrl: string
+}
 
 interface WebinarDetailPageProps {
   params: {
@@ -40,8 +29,34 @@ interface WebinarDetailPageProps {
 }
 
 export default function WebinarDetailPage({ params }: WebinarDetailPageProps) {
-  const webinarId = Number.parseInt(params.id)
-  const webinar = webinars.find((w) => w.id === webinarId)
+  const [webinar, setWebinar] = useState<Webinar | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchWebinar = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/api/webinar/${params.id}`)
+        if (!res.ok) throw new Error("Failed to fetch webinar")
+        const data = await res.json()
+        setWebinar(data)
+      } catch (error) {
+        console.error("Error fetching webinar:", error)
+        setWebinar(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchWebinar()
+  }, [params.id])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">Loading webinar details...</p>
+      </div>
+    )
+  }
 
   if (!webinar) {
     return (
@@ -67,7 +82,7 @@ export default function WebinarDetailPage({ params }: WebinarDetailPageProps) {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-balance">Webinar: {webinar.title}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Webinar: {webinar.title}</h1>
           <p className="text-gray-600 text-lg">
             Date: {webinar.date} | Time: {webinar.time}
           </p>
@@ -128,7 +143,7 @@ export default function WebinarDetailPage({ params }: WebinarDetailPageProps) {
         </div>
 
         {/* Webinar Objectives */}
-        {webinar.objectives && (
+        {webinar.objectives && webinar.objectives.length > 0 && (
           <Card className="mb-8 bg-white">
             <CardContent className="p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Learning Objectives</h2>
