@@ -18,7 +18,7 @@ export default function CommitteePage() {
     async function fetchCommittee() {
       setLoading(true)
       try {
-        const res = await fetch(`${backend}/api/committee`)
+        const res = await fetch(`${backend}/api/committees`)
         const data = await res.json()
         setCommittee(data)
       } catch (err) {
