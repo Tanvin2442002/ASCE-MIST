@@ -27,6 +27,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Footer from "@/components/footer";
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function HomePage() {
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -36,7 +38,7 @@ export default function HomePage() {
     async function fetchAnnouncements() {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:5000/api/announcements");
+        const res = await fetch(`${backend}/api/announcements`);
         const data = await res.json();
         setAnnouncements(data);
       } catch (err) {
@@ -47,7 +49,7 @@ export default function HomePage() {
     async function fetchevents() {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:5000/api/upcoming-events");
+        const res = await fetch(`${backend}/api/upcoming-events`);
         const data = await res.json();
         setEvents(data);
       } catch (err) {
