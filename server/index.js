@@ -8,7 +8,7 @@ const seminar = require('./Routes/seminar');
 const webinars = require('./Routes/webinars');
 const events = require('./Routes/events');
 const upcomingEvents = require('./Routes/upcoming-events');
-
+const committee = require('./Routes/committee');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -20,6 +20,7 @@ app.use('/api', seminar);
 app.use('/api', webinars);
 app.use('/api', events);
 app.use('/api', upcomingEvents);
+app.use('/api', committee);
 
 
 // app.get("/", async (req, res) => {
