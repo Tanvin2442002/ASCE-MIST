@@ -7,6 +7,8 @@ import Link from "next/link"
 
 const ITEMS_PER_PAGE = 10
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function SocialEventsPage() {
   const [socialEvents, setSocialEvents] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -16,7 +18,7 @@ export default function SocialEventsPage() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/events")
+        const res = await fetch(`${backend}/api/events`)
         if (!res.ok) throw new Error("Failed to fetch events")
         const data = await res.json()
         setSocialEvents(data)

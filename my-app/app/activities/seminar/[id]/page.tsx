@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar, MapPin, User, Play, ExternalLink } from "lucide-react"
 
+// const BA = process.env.NEXT_PUBLIC_BACKEND
 interface Seminar {
   id: string
   title: string
@@ -27,18 +28,25 @@ interface SeminarDetailPageProps {
   params: { id: string } | Promise<{ id: string }>
 }
 
+const BACKEND = process.env.NEXT_PUBLIC_BACKEND 
+
 async function getSeminar(id: string): Promise<Seminar | null> {
+  if (!BACKEND) return null
+
   try {
-    const base = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api"
-    // try single endpoint first
+    // prefer single-item endpoint
     try {
-      const singleRes = await fetch(`${base}/seminars/${id}`, { cache: "no-store" })
-      if (singleRes.ok) return (await singleRes.json()) as Seminar
+      const singleRes = await fetch(`${BACKEND}/seminars/${id}`, { cache: "no-store" })
+      if (singleRes.ok) {
+        const singleData = (await singleRes.json()) as Seminar
+        return singleData
+      }
+      // if 404 or other, fall through to list fetch
     } catch {
-      // ignore and fallback to list fetch below
+      // ignore and fallback to list fetch
     }
 
-    const res = await fetch(`${base}/seminars`, { cache: "no-store" })
+    const res = await fetch(`${BACKEND}/seminars`, { cache: "no-store" })
     if (!res.ok) return null
     const seminars: Seminar[] = await res.json()
     return seminars.find((s) => s.id === id) || null
@@ -49,7 +57,7 @@ async function getSeminar(id: string): Promise<Seminar | null> {
 
 export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
   const [seminar, setSeminar] = useState<Seminar | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [id, setId] = useState<string | null>(null)
 
@@ -59,11 +67,10 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
 
     const resolveParams = async () => {
       try {
-        // params might be a Promise (Next.js new behavior)
-        const p = (params as any)
+        const p = params as any
         const resolved = typeof p?.then === "function" ? await p : p
         if (mounted) setId(resolved?.id ?? null)
-      } catch (err) {
+      } catch {
         if (mounted) setId(null)
       }
     }
@@ -81,14 +88,15 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
     let mounted = true
 
     const fetchSeminar = async () => {
+      setLoading(true)
+      setError(null)
       try {
-        setLoading(true)
         const data = await getSeminar(id)
         if (!mounted) return
 
         if (!data) {
-          setError("Seminar not found.")
           setSeminar(null)
+          setError("Seminar not found.")
           return
         }
 
@@ -104,6 +112,7 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
         setSeminar(data)
       } catch (err: any) {
         setError(err?.message || "Error fetching seminar")
+        setSeminar(null)
       } finally {
         if (mounted) setLoading(false)
       }
@@ -115,6 +124,7 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
       mounted = false
     }
   }, [id])
+
 
   // Normalized array for rendering additional images (guaranteed array)
   const additionalImages: { url: string; caption?: string }[] = (() => {
@@ -142,6 +152,7 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+        {/* <p>not foundddd</p> */}
         <p className="text-red-500 text-lg">{error}</p>
       </div>
     )

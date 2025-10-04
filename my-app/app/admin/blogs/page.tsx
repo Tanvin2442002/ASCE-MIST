@@ -16,6 +16,8 @@ interface Event {
   image?: string
 }
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function AdminEvents() {
   const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
@@ -23,7 +25,7 @@ export default function AdminEvents() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/events")
+        const res = await fetch(`${backend}/api/events`)
         const data = await res.json()
         setEvents(data)
       } catch (err) {

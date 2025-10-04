@@ -12,6 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Save } from "lucide-react"
 import Link from "next/link"
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function NewWebinarPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -108,7 +110,7 @@ export default function NewWebinarPage() {
       if (speakerImageFile) fd.append("speaker_image", speakerImageFile)
       if (audienceImageFile) fd.append("audience_image", audienceImageFile)
 
-      const res = await fetch("http://localhost:5000/api/webinar", {
+      const res = await fetch(`${backend}/api/webinar`, {
         method: "POST",
         body: fd, // browser will set multipart/form-data and boundary
       })

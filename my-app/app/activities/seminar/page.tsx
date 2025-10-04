@@ -7,6 +7,8 @@ import { Card, CardContent } from "@/components/ui/card"
 
 const ITEMS_PER_PAGE = 10
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function SeminarsPage() {
   const [seminars, setSeminars] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -16,7 +18,7 @@ export default function SeminarsPage() {
     async function fetchSeminars() {
       setLoading(true)
       try {
-        const res = await fetch("http://localhost:5000/api/seminars")
+        const res = await fetch(`${backend}/api/seminars`)
         const data = await res.json()
         setSeminars(data)
       } catch {

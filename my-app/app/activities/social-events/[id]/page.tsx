@@ -12,6 +12,8 @@ interface SocialEventDetailPageProps {
   }
 }
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function SocialEventDetailPage({ params }: SocialEventDetailPageProps) {
   const [event, setEvent] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
@@ -20,7 +22,7 @@ export default function SocialEventDetailPage({ params }: SocialEventDetailPageP
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/events/${params.id}`)
+        const res = await fetch(`${backend}/api/events/${params.id}`)
         if (!res.ok) throw new Error("Failed to fetch event")
         const data = await res.json()
         setEvent(data)

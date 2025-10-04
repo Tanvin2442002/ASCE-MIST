@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 
 const ITEMS_PER_PAGE = 10
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function AnnouncementPage() {
   const [announcements, setAnnouncements] = useState<any[]>([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -16,7 +18,7 @@ export default function AnnouncementPage() {
     async function fetchAnnouncements() {
       setLoading(true)
       try {
-        const res = await fetch("http://localhost:5000/api/announcements")
+        const res = await fetch(`${backend}/api/announcements`)
         const data = await res.json()
         setAnnouncements(data)
       } catch (err) {

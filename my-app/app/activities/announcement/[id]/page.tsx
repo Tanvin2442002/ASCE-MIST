@@ -1,3 +1,4 @@
+"use client"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -5,6 +6,9 @@ import { ArrowLeft, Calendar, Tag } from "lucide-react"
 import { MarkdownPreviewer } from "@/components/markdown-previewer"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+
+
+const backend = process.env.NEXT_PUBLIC_BACKEND
 
 interface Announcement {
   id: string
@@ -31,7 +35,7 @@ export default function AnnouncementDetailPage({ params }: AnnouncementDetailPag
   useEffect(() => {
     const fetchAnnouncement = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/announcements/${params.id}`, { cache: "no-store" })
+        const res = await fetch(`${backend}/api/announcements/${params.id}`, { cache: "no-store" })
         if (!res.ok) throw new Error("Failed to fetch announcement")
         const data = await res.json()
         setAnnouncement(data)

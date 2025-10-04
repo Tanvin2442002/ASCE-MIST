@@ -13,6 +13,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Save } from "lucide-react"
 import Link from "next/link"
 
+
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function NewSeminarPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -65,7 +68,7 @@ export default function NewSeminarPage() {
         if (additionalCaptions[idx]) data.append(`additional_caption_${idx}`, additionalCaptions[idx])
       })
 
-      const response = await fetch("http://localhost:5000/api/seminars", {
+      const response = await fetch(`${backend}/api/seminars`, {
         method: "POST",
         body: data,
       })

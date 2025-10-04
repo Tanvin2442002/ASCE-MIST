@@ -18,6 +18,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function NewEventPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -58,7 +60,7 @@ export default function NewEventPage() {
       if (formData.activities_image)
         form.append("activities_image", formData.activities_image);
 
-      const response = await fetch("http://localhost:5000/api/events", {
+      const response = await fetch(`${backend}/api/events`, {
         method: "POST",
         body: form,
       });

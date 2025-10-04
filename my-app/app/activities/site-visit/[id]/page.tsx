@@ -6,6 +6,8 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
+
+const backend = process.env.NEXT_PUBLIC_BACKEND
 interface SiteVisit {
   id: string
   title: string
@@ -26,7 +28,7 @@ interface SiteVisit {
 // Fetch a single site visit by ID from backend
 async function getSiteVisitById(id: string): Promise<SiteVisit | null> {
   try {
-    const res = await fetch(`http://localhost:5000/api/site-visits/${id}`, { cache: "no-store" })
+    const res = await fetch(`${backend}/api/site-visits/${id}`, { cache: "no-store" })
     if (!res.ok) return null
     return await res.json()
   } catch {

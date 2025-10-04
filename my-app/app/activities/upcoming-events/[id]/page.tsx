@@ -20,6 +20,8 @@ interface EventDetail {
   registration_link?: string | null
 }
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function EventDetailPage() {
   const params = useParams()
   const [event, setEvent] = useState<EventDetail | null>(null)
@@ -31,7 +33,7 @@ export default function EventDetailPage() {
       setLoading(true)
       setError(false)
       try {
-        const res = await fetch(`http://localhost:5000/api/upcoming-events/${params.id}`)
+        const res = await fetch(`${backend}/api/upcoming-events/${params.id}`)
         if (!res.ok) {
           if (res.status === 404) {
             notFound()

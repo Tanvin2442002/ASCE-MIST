@@ -18,6 +18,9 @@ interface Webinar {
 
 const ITEMS_PER_PAGE = 10
 
+
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function WebinarPage() {
   const [webinars, setWebinars] = useState<Webinar[]>([])
   const [loading, setLoading] = useState(true)
@@ -26,7 +29,7 @@ export default function WebinarPage() {
   useEffect(() => {
     const fetchWebinars = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/webinars")
+        const res = await fetch(`${backend}/api/webinars`)
         if (!res.ok) throw new Error("Failed to fetch webinars")
         const data = await res.json()
         setWebinars(data)

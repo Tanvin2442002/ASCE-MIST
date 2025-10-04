@@ -28,6 +28,9 @@ interface WebinarDetailPageProps {
   }
 }
 
+
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function WebinarDetailPage({ params }: WebinarDetailPageProps) {
   const [webinar, setWebinar] = useState<Webinar | null>(null)
   const [loading, setLoading] = useState(true)
@@ -35,7 +38,7 @@ export default function WebinarDetailPage({ params }: WebinarDetailPageProps) {
   useEffect(() => {
     const fetchWebinar = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/webinar/${params.id}`)
+        const res = await fetch(`${backend}/api/webinar/${params.id}`)
         if (!res.ok) throw new Error("Failed to fetch webinar")
         const data = await res.json()
         setWebinar(data)

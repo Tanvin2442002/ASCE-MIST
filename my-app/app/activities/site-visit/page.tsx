@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ChevronLeft, ChevronRight, Calendar, MapPin } from "lucide-react"
 
+const backend = process.env.NEXT_PUBLIC_BACKEND
 interface SiteVisit {
   id: string
   title: string
@@ -26,7 +27,7 @@ export default function SiteVisitPage() {
   useEffect(() => {
     const fetchSiteVisits = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/site-visits`)
+        const res = await fetch(`${backend}/api/site-visits`)
         if (!res.ok) throw new Error("Failed to fetch site visits")
         const data: SiteVisit[] = await res.json()
         setSiteVisits(data)

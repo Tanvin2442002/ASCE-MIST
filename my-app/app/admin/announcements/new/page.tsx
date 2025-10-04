@@ -15,6 +15,9 @@ import { ArrowLeft, Save, Eye } from "lucide-react"
 import Link from "next/link"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
+
+const backend = process.env.NEXT_PUBLIC_BACKEND
+
 export default function NewAnnouncement() {
   const [formData, setFormData] = useState({
     title: "",
@@ -48,7 +51,7 @@ export default function NewAnnouncement() {
       if (file) data.append("image", file)
 
       // POST to your backend API (adjust the URL if needed)
-      const response = await fetch("http://localhost:5000/api/announcements", {
+      const response = await fetch(`${backend}/api/announcements`, {
         method: "POST",
         body: data,
       })

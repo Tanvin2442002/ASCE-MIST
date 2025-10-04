@@ -20,6 +20,8 @@ interface UpcomingEvent {
 
 const ITEMS_PER_PAGE = 10;
 
+const backend = process.env.NEXT_PUBLIC_BACKEND;
+
 export default function UpcomingEventsPage() {
   const [events, setEvents] = useState<UpcomingEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ export default function UpcomingEventsPage() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/upcoming-events"); // replace with your API endpoint
+        const res = await fetch(`${backend}/api/upcoming-events`); // replace with your API endpoint
         const data = await res.json();
         setEvents(data);
       } catch (err) {

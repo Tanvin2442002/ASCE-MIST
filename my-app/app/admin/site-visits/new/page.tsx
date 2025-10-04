@@ -18,7 +18,7 @@ import {
 import { ArrowLeft, Save, Eye } from "lucide-react"
 import Link from "next/link"
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/site-visits/upload"
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND
 
 export default function NewSiteVisit() {
   const [formData, setFormData] = useState({
@@ -78,7 +78,7 @@ export default function NewSiteVisit() {
         payload.append("images", file, file.name)
       })
 
-      const resp = await fetch(`${API_BASE}`, {
+      const resp = await fetch(`${API_BASE}/api/site-visits/upload`, {
         method: "POST",
         body: payload,
       })
