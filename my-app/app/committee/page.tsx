@@ -71,7 +71,7 @@ export default function CommitteePage() {
                 <img
                   src={member.image_url}
                   alt="Committee Member"
-                  className="w-full h-80 object-cover"
+                  className="w-full h-auto object-cover"
                   loading="lazy"
                 />
               </CardContent>
