@@ -9,6 +9,8 @@ const webinars = require('./Routes/webinars');
 const events = require('./Routes/events');
 const upcomingEvents = require('./Routes/upcoming-events');
 const committee = require('./Routes/committee');
+const achievements = require('./Routes/achievements');
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -21,6 +23,7 @@ app.use('/api', webinars);
 app.use('/api', events);
 app.use('/api', upcomingEvents);
 app.use('/api', committee);
+app.use('/api', achievements);
 
 
 // app.get("/", async (req, res) => {

@@ -1,144 +1,79 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
-// Sample achievements data
-const achievements = [
-  {
-    id: 1,
-    title: "Best Student Chapter Award 2024",
-    category: "Chapter Excellence",
-    date: "2024-03-15",
-    description:
-      "Recognized as the Best ASCE Student Chapter in Bangladesh for outstanding activities and member engagement.",
-    image: "/images/best-chapter-award.jpg",
-    awardedBy: "ASCE International",
-    level: "National",
-  },
-  {
-    id: 2,
-    title: "Outstanding Community Service Project",
-    category: "Community Service",
-    date: "2024-02-20",
-    description: "Awarded for the flood relief infrastructure project that helped 500+ families in rural Bangladesh.",
-    image: "/images/community-service-award.jpg",
-    awardedBy: "Bangladesh Engineering Council",
-    level: "National",
-  },
-  {
-    id: 3,
-    title: "Innovation in Sustainable Engineering",
-    category: "Innovation",
-    date: "2024-01-10",
-    description: "Recognition for developing eco-friendly concrete solutions using local waste materials.",
-    image: "/images/innovation-award.jpg",
-    awardedBy: "Green Engineering Society",
-    level: "International",
-  },
-  {
-    id: 4,
-    title: "Student Leadership Excellence",
-    category: "Leadership",
-    date: "2023-12-05",
-    description:
-      "Awarded to chapter president for exceptional leadership in organizing technical events and workshops.",
-    image: "/images/leadership-award.jpg",
-    awardedBy: "MIST Administration",
-    level: "Institutional",
-  },
-  {
-    id: 5,
-    title: "Best Technical Paper Presentation",
-    category: "Research",
-    date: "2023-11-18",
-    description: "First place in national student paper competition for research on earthquake-resistant structures.",
-    image: "/images/technical-paper-award.jpg",
-    awardedBy: "Bangladesh Earthquake Society",
-    level: "National",
-  },
-  {
-    id: 6,
-    title: "Outstanding Volunteer Service",
-    category: "Volunteer Service",
-    date: "2023-10-25",
-    description:
-      "Recognition for 200+ hours of volunteer service in disaster relief and community development projects.",
-    image: "/images/volunteer-award.jpg",
-    awardedBy: "National Volunteer Association",
-    level: "National",
-  },
-  {
-    id: 7,
-    title: "Excellence in Academic Performance",
-    category: "Academic",
-    date: "2023-09-12",
-    description: "Collective recognition for maintaining highest GPA among all student organizations at MIST.",
-    image: "/images/academic-excellence.jpg",
-    awardedBy: "MIST Academic Council",
-    level: "Institutional",
-  },
-  {
-    id: 8,
-    title: "Best Engineering Design Competition",
-    category: "Competition",
-    date: "2023-08-30",
-    description: "First place in inter-university bridge design competition with innovative cable-stayed design.",
-    image: "/images/design-competition.jpg",
-    awardedBy: "Engineering Design Council",
-    level: "National",
-  },
-  {
-    id: 9,
-    title: "Outstanding Event Organization",
-    category: "Event Management",
-    date: "2023-07-14",
-    description: "Excellence award for organizing the largest student engineering conference in Bangladesh.",
-    image: "/images/event-organization.jpg",
-    awardedBy: "Conference Management Board",
-    level: "National",
-  },
-  {
-    id: 10,
-    title: "Environmental Impact Recognition",
-    category: "Environment",
-    date: "2023-06-22",
-    description: "Awarded for implementing campus-wide water conservation project reducing usage by 30%.",
-    image: "/images/environmental-award.jpg",
-    awardedBy: "Environmental Protection Agency",
-    level: "National",
-  },
-  {
-    id: 11,
-    title: "Student Mentorship Excellence",
-    category: "Mentorship",
-    date: "2023-05-08",
-    description: "Recognition for establishing successful peer mentoring program for junior engineering students.",
-    image: "/images/mentorship-award.jpg",
-    awardedBy: "Student Development Council",
-    level: "Institutional",
-  },
-  {
-    id: 12,
-    title: "Technology Innovation Award",
-    category: "Technology",
-    date: "2023-04-16",
-    description: "Awarded for developing mobile app for structural health monitoring using IoT sensors.",
-    image: "/images/technology-award.jpg",
-    awardedBy: "Tech Innovation Hub",
-    level: "International",
-  },
-]
-
 const ITEMS_PER_PAGE = 10
 
 export default function AchievementsPage() {
+  const [achievements, setAchievements] = useState<any[]>([])
   const [currentPage, setCurrentPage] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const totalPages = Math.ceil(achievements.length / ITEMS_PER_PAGE)
+  const backend = process.env.NEXT_PUBLIC_BACKEND
+
+  useEffect(() => {
+    if (!backend) {
+      setError("Backend URL is not configured.")
+      setLoading(false)
+      return
+    }
+
+    const controller = new AbortController()
+    const signal = controller.signal
+
+    async function fetchAchievements() {
+      try {
+        setLoading(true)
+        setError(null)
+        const res = await fetch(`${backend}/api/achievements`, { signal })
+        if (!res.ok) {
+          const text = await res.text().catch(() => "")
+          throw new Error(`Failed to fetch achievements: ${res.status} ${text}`)
+        }
+        const data = await res.json()
+
+        // Normalize backend fields to match what the UI expects:
+        // - awarded_by -> awardedBy
+        // - ensure date is present
+        const normalized = (data || []).map((a: any) => ({
+          id: a.id,
+          title: a.title,
+          category: a.category,
+          date: a.date,
+          description: a.description,
+          image: a.image,
+          awardedBy: a.awarded_by ?? a.awardedBy ?? "",
+          level: a.level,
+          // keep other fields if needed later:
+          details: a.details,
+          criteria: a.criteria,
+          additional_images: a.additional_images,
+          impact: a.impact,
+        }))
+
+        setAchievements(normalized)
+      } catch (err: any) {
+        if (err.name === "AbortError") return
+        console.error("Error fetching achievements:", err)
+        setError(err.message || "Error fetching achievements")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchAchievements()
+
+    return () => {
+      controller.abort()
+    }
+  }, [backend])
+
+  const totalPages = Math.max(1, Math.ceil(achievements.length / ITEMS_PER_PAGE))
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
   const currentAchievements = achievements.slice(startIndex, endIndex)
@@ -157,6 +92,7 @@ export default function AchievementsPage() {
       Environment: "bg-emerald-100 text-emerald-800",
       Mentorship: "bg-violet-100 text-violet-800",
       Technology: "bg-cyan-100 text-cyan-800",
+      Partnership: "bg-sky-100 text-sky-800",
     }
     return colors[category] || "bg-gray-100 text-gray-800"
   }
@@ -182,6 +118,18 @@ export default function AchievementsPage() {
           </p>
         </div>
 
+        {/* Loading / Error */}
+        {loading && (
+          <div className="text-center mb-6">
+            <p className="text-gray-600">Loading achievements…</p>
+          </div>
+        )}
+        {error && (
+          <div className="text-center mb-6">
+            <p className="text-red-600">Error: {error}</p>
+          </div>
+        )}
+
         {/* Achievements Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {currentAchievements.map((achievement) => (
@@ -204,11 +152,13 @@ export default function AchievementsPage() {
                   <div className="flex items-center justify-between mb-3">
                     <Badge className={getCategoryColor(achievement.category)}>{achievement.category}</Badge>
                     <span className="text-sm text-gray-500">
-                      {new Date(achievement.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {achievement.date
+                        ? new Date(achievement.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
+                        : ""}
                     </span>
                   </div>
                   <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
@@ -229,6 +179,11 @@ export default function AchievementsPage() {
               </Link>
             </Card>
           ))}
+
+          {/* If there are no achievements and not loading */}
+          {!loading && achievements.length === 0 && (
+            <div className="col-span-1 md:col-span-2 text-center text-gray-600">No achievements found.</div>
+          )}
         </div>
 
         {/* Pagination */}

@@ -27,12 +27,14 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Footer from "@/components/footer";
 
-const backend = process.env.NEXT_PUBLIC_BACKEND
+const backend = process.env.NEXT_PUBLIC_BACKEND;
 
 export default function HomePage() {
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const images = ["https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/541658753_122236759676185156_6443978270411591295_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/542265422_122236757816185156_3620413485046174193_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/542482835_122236759658185156_4528303572163965139_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/554924841_122240018294185156_7291714668580965779_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/543429453_122236759520185156_5532737984210934021_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/555485973_122240018714185156_5264440853786801971_n.jpg"]
 
   useEffect(() => {
     async function fetchAnnouncements() {
@@ -64,7 +66,6 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       {/* Navigation Component */}
       {/* <Navigation currentPath="/" /> */}
-
       {/* Hero Section */}
       <LampContainer className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 relative">
         <div
@@ -113,9 +114,7 @@ export default function HomePage() {
           </div>
         </motion.div>
       </LampContainer>
-
       <CurvyDivider className="text-primary -mt-1" />
-
       {/* Announcements Section */}
       <section
         id="announcements"
@@ -216,7 +215,6 @@ export default function HomePage() {
           )}
         </div>
       </section>
-
       {/* About Section */}
       <section id="about" className="py-16 bg-card/50 relative overflow-hidden">
         <FloatingBlobs />
@@ -257,7 +255,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Quick Links */}
       <section className="py-16 relative">
         <div className="container mx-auto px-4">
@@ -322,9 +319,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       <CurvyDivider className="text-card rotate-180" />
-
       {/* Events Section */}
       <section
         id="events"
@@ -424,7 +419,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Why Join Section */}
       <section id="membership" className="py-16 relative overflow-hidden">
         <div className="absolute bottom-10 left-10 w-48 h-48 bg-gradient-to-tr from-primary/15 to-accent/15 rounded-full blur-xl animate-float" />
@@ -523,28 +517,47 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Gallery Section */}
       <section id="gallery" className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12">
             Gallery
           </h2>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div
-                key={i}
-                className="aspect-square bg-primary/10 rounded-lg hover:shadow-lg transition-shadow cursor-pointer"
-              >
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                  <span>Event Photo {i}</span>
-                </div>
-              </div>
-            ))}
+            {(images && images.length > 0 ? images : [1, 2, 3, 4, 5, 6]).map(
+              (item, idx) => {
+                const src = typeof item === "string" ? item : null;
+
+                return (
+                  <div
+                    key={src || idx}
+                    className="aspect-square bg-primary/10 rounded-lg hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
+                  >
+                    {src ? (
+                      <img
+                        src={src}
+                        alt={`Event Photo ${idx + 1}`}
+                        className="w-full h-full object-cover transform transition-transform duration-300 hover:scale-105"
+                        loading="lazy"
+                        onError={(e) => {
+                          // fallback image if the provided URL fails
+                          (e.currentTarget as HTMLImageElement).src =
+                            "/placeholder.svg";
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                        <span>Event Photo {idx + 1}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+            )}
           </div>
         </div>
       </section>
-
       {/* Testimonials */}
       <section className="py-16">
         <div className="container mx-auto px-4">
@@ -564,11 +577,13 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-semibold">
-                      SA
+                      AI
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">Sarah Ahmed</p>
+                    <p className="font-semibold text-foreground">
+                      Ariful Islam
+                    </p>
                     <p className="text-sm text-muted-foreground">
                       Chapter President
                     </p>
@@ -576,7 +591,6 @@ export default function HomePage() {
                 </div>
               </CardContent>
             </Card>
-
             <Card className="h-full flex flex-col">
               <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
@@ -589,12 +603,12 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-semibold">
-                      AH
+                      AN
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-foreground">
-                      Ahmed Hassan
+                      Aliful Nabit
                     </p>
                     <p className="text-sm text-muted-foreground">
                       Student Member
@@ -616,12 +630,12 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-semibold">
-                      MR
+                      KS
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-foreground">
-                      Dr. Mohammad Rahman
+                      Dr. Khondokar Shakil Ahmed, PEng, CEng, FICE
                     </p>
                     <p className="text-sm text-muted-foreground">
                       Faculty Advisor
@@ -633,7 +647,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Footer */}
       {/* <Footer /> */}
     </div>
