@@ -603,15 +603,15 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-semibold">
-                      AN
+                      MKS
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-foreground">
-                      Aliful Nabit
+                      Mohd. Mostafa Hossain Khan Samrat
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Student Member
+                      Vice President
                     </p>
                   </div>
                 </div>
