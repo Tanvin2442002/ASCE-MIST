@@ -33,7 +33,7 @@ async function fetchSeminar(id: string): Promise<Seminar | null> {
   if (!BACKEND) return null
 
   try {
-    const res = await fetch(`${BACKEND}/seminars/${id}`, { cache: "no-store" })
+    const res = await fetch(`${BACKEND}/api/seminars/${id}`, { cache: "no-store" })
     if (!res.ok) return null
     const data = (await res.json()) as Seminar
     // Ensure additional_images is an array
