@@ -135,6 +135,42 @@ router.post(
   }
 );
 
+// Get a specific seminar by ID
+router.get("/seminars/:id", async (req, res) => {
+  const { id } = req.params; // get ID from route parameter
+
+  try {
+    const seminar = await sql`
+      SELECT
+        id,
+        title,
+        date,
+        time,
+        speaker,
+        designation,
+        location,
+        attendees,
+        image,
+        additional_images,
+        description,
+        full_description,
+        video_url,
+        objectives
+      FROM public.seminars
+      WHERE id = ${id};
+    `;
+
+    if (!seminar || seminar.length === 0) {
+      return res.status(404).json({ error: "Seminar not found" });
+    }
+
+    res.status(200).json(seminar[0]); // return the single seminar object
+  } catch (error) {
+    console.error("Error fetching seminar:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // GET /seminars - fetch all seminars
 router.get("/seminars", async (req, res) => {
   try {
