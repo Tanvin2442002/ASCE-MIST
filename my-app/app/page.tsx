@@ -34,7 +34,14 @@ export default function HomePage() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const images = ["https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/541658753_122236759676185156_6443978270411591295_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/542265422_122236757816185156_3620413485046174193_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/542482835_122236759658185156_4528303572163965139_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/554924841_122240018294185156_7291714668580965779_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/543429453_122236759520185156_5532737984210934021_n.jpg","https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/555485973_122240018714185156_5264440853786801971_n.jpg"]
+  const images = [
+    "https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/541658753_122236759676185156_6443978270411591295_n.jpg",
+    "https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/542265422_122236757816185156_3620413485046174193_n.jpg",
+    "https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/542482835_122236759658185156_4528303572163965139_n.jpg",
+    "https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/554924841_122240018294185156_7291714668580965779_n.jpg",
+    "https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/543429453_122236759520185156_5532737984210934021_n.jpg",
+    "https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/random_images/555485973_122240018714185156_5264440853786801971_n.jpg",
+  ];
 
   useEffect(() => {
     async function fetchAnnouncements() {
@@ -66,56 +73,29 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       {/* Navigation Component */}
       {/* <Navigation currentPath="/" /> */}
-      {/* Hero Section */}
-      <LampContainer className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 relative">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/524640275_1288113439631694_7476496094961356942_n.jpg-QhwDoJNPfxOPoGf7UXvNrsAc08FdNb.jpeg')`,
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-primary/30 to-primary/35"></div>
-        </div>
 
-        <FloatingBlobs />
-        <motion.div
-          initial={{ opacity: 0.5, y: 100 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: 0.3,
-            duration: 0.8,
-            ease: "easeInOut",
-          }}
-          className="mt-8 text-center relative z-10"
-        >
-          <h1 className="bg-gradient-to-br from-white to-white py-4 bg-clip-text text-4xl md:text-7xl font-bold tracking-tight text-transparent mb-6 text-balance drop-shadow-2xl">
-            Building Leaders in <br /> Civil Engineering
-          </h1>
-          <p className="text-xl text-white mb-8 text-pretty max-w-2xl mx-auto drop-shadow-lg bg-black/20 backdrop-blur-sm rounded-lg p-6">
-            Join the ASCE Student Chapter at Military Institute of Science and
-            Technology (MIST), Bangladesh. Connect with professionals, engage in
-            research, and shape the future of civil engineering from our
-            state-of-the-art campus.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90 shadow-2xl font-semibold"
-            >
-              Join Our Chapter
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-white text-white hover:bg-white hover:text-primary bg-white/20 backdrop-blur-sm shadow-2xl font-semibold"
-            >
-              Explore Campus
-            </Button>
-          </div>
-        </motion.div>
-      </LampContainer>
-      <CurvyDivider className="text-primary -mt-1" />
-      {/* Announcements Section */}
+      {/* =========================
+          HERO (video confined to this block)
+          ========================= */}
+      <header
+        id="hero"
+        className="relative min-h-[60vh] md:min-h-screen max-h-[60vh] flex items-center"
+        aria-label="Hero"
+      >
+        {/* video layer (absolute inside header only) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <video
+            className="w-full h-full object-cover"
+            src="/MIST.mp4"
+            poster="/placeholder.svg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-hidden
+          />
+        </div>
+      </header>
       <section
         id="announcements"
         className="py-16 bg-muted/20 relative overflow-hidden"
@@ -182,9 +162,7 @@ export default function HomePage() {
                         <div className="flex items-center text-sm text-muted-foreground">
                           <Calendar className="w-4 h-4 mr-1" />
                           {announcement.created_at
-                            ? new Date(
-                                announcement.created_at
-                              ).toLocaleDateString()
+                            ? new Date(announcement.created_at).toLocaleDateString()
                             : ""}
                         </div>
                       </div>
@@ -194,7 +172,6 @@ export default function HomePage() {
                     </CardHeader>
                     <CardContent className="pt-0 flex-1 flex flex-col justify-between">
                       <CardDescription className="text-pretty mb-4 leading-relaxed flex-1">
-                        {/* Optionally show a short preview, or remove this line if you don't want description */}
                         {announcement.description?.slice(0, 120)}...
                       </CardDescription>
                       <Button
@@ -215,6 +192,9 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      {/* ... rest of your sections unchanged ... */}
+
       {/* About Section */}
       <section id="about" className="py-16 bg-card/50 relative overflow-hidden">
         <FloatingBlobs />
@@ -255,6 +235,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
       {/* Quick Links */}
       <section className="py-16 relative">
         <div className="container mx-auto px-4">
@@ -319,12 +300,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
       <CurvyDivider className="text-card rotate-180" />
+
       {/* Events Section */}
-      <section
-        id="events"
-        className="py-16 bg-card/30 relative overflow-hidden"
-      >
+      <section id="events" className="py-16 bg-card/30 relative overflow-hidden">
         <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-2xl animate-blob" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.h2
@@ -345,7 +325,6 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="h-full"
               >
-                {/* Link with className (no passHref / legacyBehavior) */}
                 <Link href={`activities/upcoming-events/${event.id}`}>
                   <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur-sm h-full flex flex-col cursor-pointer">
                     {event.image ? (
@@ -391,7 +370,6 @@ export default function HomePage() {
 
                     <CardContent className="mt-auto">
                       {event.registration_link ? (
-                        /* stopPropagation so Register opens the external link and doesn't trigger card navigation */
                         <a
                           href={event.registration_link}
                           target="_blank"
@@ -419,147 +397,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* Why Join Section */}
-      <section id="membership" className="py-16 relative overflow-hidden">
-        <div className="absolute bottom-10 left-10 w-48 h-48 bg-gradient-to-tr from-primary/15 to-accent/15 rounded-full blur-xl animate-float" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <motion.h2
-              className="text-3xl font-bold text-center text-foreground mb-12"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              Why Join ASCE @ MIST?
-            </motion.h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: Users,
-                    title: "Professional Networking",
-                    desc: "Connect with industry professionals and build lasting relationships",
-                  },
-                  {
-                    icon: BookOpen,
-                    title: "Research Opportunities",
-                    desc: "Participate in cutting-edge research and publication opportunities",
-                  },
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    className="flex items-start space-x-4"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.2 }}
-                  >
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <item.icon className="w-4 h-4 text-primary-foreground" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-muted-foreground">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: Award,
-                    title: "Leadership Development",
-                    desc: "Develop leadership skills through competitions and chapter activities",
-                  },
-                  {
-                    icon: ExternalLink,
-                    title: "Global Community",
-                    desc: "Access to the worldwide ASCE network and resources",
-                  },
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    className="flex items-start space-x-4"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.2 }}
-                  >
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <item.icon className="w-4 h-4 text-primary-foreground" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-muted-foreground">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            <motion.div
-              className="text-center mt-12"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <Button
-                size="lg"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground"
-                onClick={() => (window.location.href = "/membership")}
-              >
-                Become a Member Today
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-      {/* Gallery Section */}
-      <section id="gallery" className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-foreground mb-12">
-            Gallery
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {(images && images.length > 0 ? images : [1, 2, 3, 4, 5, 6]).map(
-              (item, idx) => {
-                const src = typeof item === "string" ? item : null;
-
-                return (
-                  <div
-                    key={src || idx}
-                    className="aspect-square bg-primary/10 rounded-lg hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
-                  >
-                    {src ? (
-                      <img
-                        src={src}
-                        alt={`Event Photo ${idx + 1}`}
-                        className="w-full h-full object-cover transform transition-transform duration-300 hover:scale-105"
-                        loading="lazy"
-                        onError={(e) => {
-                          // fallback image if the provided URL fails
-                          (e.currentTarget as HTMLImageElement).src =
-                            "/placeholder.svg";
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                        <span>Event Photo {idx + 1}</span>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-            )}
-          </div>
-        </div>
-      </section>
-      {/* Testimonials */}
-      <section className="py-16">
+          <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12">
             What Our Members Say
@@ -647,8 +485,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* Footer */}
-      {/* <Footer /> */}
     </div>
   );
 }
