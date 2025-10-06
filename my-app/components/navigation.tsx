@@ -74,9 +74,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
         <div className="flex items-center justify-between">
           {/* Logo/Title */}
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg">A</span>
-            </div>
+            <img src="/LOGO.jpg" alt="ASCE MIST" className="object-contain w-12 h-12" />
             <div>
               <h1 className="font-bold text-lg md:text-xl text-gray-900">ASCE STUDENT CHAPTER, MIST</h1>
               <p className="text-xs md:text-sm text-gray-600 hidden sm:block">
