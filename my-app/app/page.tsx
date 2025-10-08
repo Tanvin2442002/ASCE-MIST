@@ -412,16 +412,16 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            From Our Commandant
+            {"From Our Commandant"}
           </motion.h2>
+
           <motion.p
             className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            A message from the Commandant of MIST &mdash; leadership, support,
-            and encouragement for our students.
+            {`A message from the Commandant of MIST — leadership, support, and encouragement for our students.`}
           </motion.p>
 
           <div className="max-w-4xl mx-auto">
@@ -433,26 +433,29 @@ export default function HomePage() {
                   className="w-full h-full object-cover"
                 />
               </div>
+
               <div className="flex-1">
                 <CardTitle className="text-card-foreground">
-                  Maj Gen Md Nasim Parvez, BSP, ndc, afwc, psc
+                  {"Maj Gen Md Nasim Parvez, BSP, ndc, afwc, psc"}
                 </CardTitle>
+
                 <CardDescription className="mb-4 text-muted-foreground">
-                  Commandant, Military Institute of Science and Technology
-                  (MIST)
+                  {
+                    "Commandant, Military Institute of Science and Technology (MIST)"
+                  }
                 </CardDescription>
+
                 <p className="text-pretty mb-4">
-                  &quot;We are proud to support the ASCE student chapter at
-                  MIST. Our students&apos; dedication to civil engineering
-                  excellence exemplifies the institute&apos;s mission to produce
-                  future-ready engineers.&quot;
+                  {`"We are proud to support the ASCE student chapter at MIST. Our students' dedication to civil engineering excellence exemplifies the institute's mission to produce future-ready engineers."`}
                 </p>
+
                 <div className="flex items-center gap-3"></div>
               </div>
             </Card>
           </div>
         </div>
       </section>
+
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12">
