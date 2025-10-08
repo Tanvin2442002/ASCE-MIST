@@ -439,18 +439,19 @@ export default function HomePage() {
               </div>
               <div className="flex-1">
                 <CardTitle className="text-card-foreground">
-                  Brig. Gen. (Retd.) Md. Nazrul Islam
+                  Maj Gen Md Nasim Parvez, BSP, ndc, afwc, psc
                 </CardTitle>
                 <CardDescription className="mb-4 text-muted-foreground">
                   Commandant, Military Institute of Science and Technology
                   (MIST)
                 </CardDescription>
                 <p className="text-pretty mb-4">
-                  "We are proud to support the ASCE student chapter at MIST. Our
-                  students' dedication to civil engineering excellence
-                  exemplifies the institute's mission to produce future-ready
-                  engineers."
+                  &quot;We are proud to support the ASCE student chapter at
+                  MIST. Our students&apos; dedication to civil engineering
+                  excellence exemplifies the institute&apos;s mission to produce
+                  future-ready engineers.&quot;
                 </p>
+                <div className="flex items-center gap-3"></div>
               </div>
             </Card>
           </div>
