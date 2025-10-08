@@ -401,10 +401,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ==========================
-          Commandant Section (added)
-          ==========================
-      */}
       <section
         id="commandant"
         className="py-16 bg-muted/10 relative overflow-hidden"
@@ -424,8 +420,8 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            A message from the Commandant of MIST — leadership, support, and
-            encouragement for our students.
+            A message from the Commandant of MIST &mdash; leadership, support,
+            and encouragement for our students.
           </motion.p>
 
           <div className="max-w-4xl mx-auto">
@@ -457,7 +453,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12">
