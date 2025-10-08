@@ -193,8 +193,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ... rest of your sections unchanged ... */}
-
       {/* About Section */}
       <section id="about" className="py-16 bg-card/50 relative overflow-hidden">
         <FloatingBlobs />
@@ -214,7 +212,7 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              The American Society of Civil Engineers (ASCE) is the world&apos;s
+              The American Society of Civil Engineers (ASCE) is the world\'s
               oldest national engineering society. Our student chapter at MIST
               focuses on professional development, networking, research
               opportunities, and preparing the next generation of civil
@@ -397,7 +395,55 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-          <section className="py-16">
+
+      {/* ==========================
+          Commandant Section (added)
+          ==========================
+      */}
+      <section id="commandant" className="py-16 bg-muted/10 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.h2
+            className="text-3xl font-bold text-center text-foreground mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            From Our Commandant
+          </motion.h2>
+          <motion.p
+            className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            A message from the Commandant of MIST — leadership, support, and encouragement for our students.
+          </motion.p>
+
+          <div className="max-w-4xl mx-auto">
+            <Card className="flex flex-col md:flex-row items-center gap-6 p-6 bg-card/90 border-border/50">
+              <div className="w-full md:w-48 flex-shrink-0 rounded overflow-hidden shadow-sm">
+                <img
+                  src="https://mist.ac.bd/storage/files/cmdt_20241.jpeg"
+                  alt="Commandant, MIST"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="flex-1">
+                <CardTitle className="text-card-foreground">Brig. Gen. (Retd.) Md. Nazrul Islam</CardTitle>
+                <CardDescription className="mb-4 text-muted-foreground">Commandant, Military Institute of Science and Technology (MIST)</CardDescription>
+
+                <p className="text-pretty mb-4">"We are proud to support the ASCE student chapter at MIST. Our students' dedication to civil engineering excellence exemplifies the institute's mission to produce future-ready engineers."</p>
+
+                <div className="flex items-center gap-3">
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12">
             What Our Members Say
