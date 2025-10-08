@@ -162,7 +162,9 @@ export default function HomePage() {
                         <div className="flex items-center text-sm text-muted-foreground">
                           <Calendar className="w-4 h-4 mr-1" />
                           {announcement.created_at
-                            ? new Date(announcement.created_at).toLocaleDateString()
+                            ? new Date(
+                                announcement.created_at
+                              ).toLocaleDateString()
                             : ""}
                         </div>
                       </div>
@@ -302,7 +304,10 @@ export default function HomePage() {
       <CurvyDivider className="text-card rotate-180" />
 
       {/* Events Section */}
-      <section id="events" className="py-16 bg-card/30 relative overflow-hidden">
+      <section
+        id="events"
+        className="py-16 bg-card/30 relative overflow-hidden"
+      >
         <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-2xl animate-blob" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.h2
@@ -400,7 +405,10 @@ export default function HomePage() {
           Commandant Section (added)
           ==========================
       */}
-      <section id="commandant" className="py-16 bg-muted/10 relative overflow-hidden">
+      <section
+        id="commandant"
+        className="py-16 bg-muted/10 relative overflow-hidden"
+      >
         <div className="container mx-auto px-4 relative z-10">
           <motion.h2
             className="text-3xl font-bold text-center text-foreground mb-6"
@@ -416,7 +424,8 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            A message from the Commandant of MIST — leadership, support, and encouragement for our students.
+            A message from the Commandant of MIST — leadership, support, and
+            encouragement for our students.
           </motion.p>
 
           <div className="max-w-4xl mx-auto">
@@ -428,15 +437,20 @@ export default function HomePage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-
               <div className="flex-1">
-                <CardTitle className="text-card-foreground">Brig. Gen. (Retd.) Md. Nazrul Islam</CardTitle>
-                <CardDescription className="mb-4 text-muted-foreground">Commandant, Military Institute of Science and Technology (MIST)</CardDescription>
-
-                <p className="text-pretty mb-4">"We are proud to support the ASCE student chapter at MIST. Our students' dedication to civil engineering excellence exemplifies the institute's mission to produce future-ready engineers."</p>
-
-                <div className="flex items-center gap-3">
-                </div>
+                <CardTitle className="text-card-foreground">
+                  Brig. Gen. (Retd.) Md. Nazrul Islam
+                </CardTitle>
+                <CardDescription className="mb-4 text-muted-foreground">
+                  Commandant, Military Institute of Science and Technology
+                  (MIST)
+                </CardDescription>
+                <p className="text-pretty mb-4">
+                  "We are proud to support the ASCE student chapter at MIST. Our
+                  students' dedication to civil engineering excellence
+                  exemplifies the institute's mission to produce future-ready
+                  engineers."
+                </p>
               </div>
             </Card>
           </div>
