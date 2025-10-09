@@ -397,7 +397,79 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-          <section className="py-16">
+
+      {/* Leadership Message Section */}
+      <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-6xl mx-auto"
+          >
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="order-2 md:order-1">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                  Message from Leadership
+                </h2>
+                <blockquote className="text-lg text-gray-700 leading-relaxed mb-6 italic">
+                  &quot;The ASCE Student Chapter at MIST represents the future of civil engineering in Bangladesh. 
+                  Through innovative thinking, collaborative learning, and practical application of engineering principles, 
+                  our students are preparing to tackle the infrastructure challenges of tomorrow. 
+                  I am proud to witness their dedication to excellence and their commitment to building a better, 
+                  more sustainable future for our nation.&quot;
+                </blockquote>
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg">
+                    <img 
+                      src="https://mist.ac.bd/storage/files/cmdt_20241.jpeg" 
+                      alt="Maj Gen Md Nasim Parvez" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-bold text-gray-900 text-lg">
+                      Maj Gen Md Nasim Parvez
+                    </p>
+                    <p className="text-gray-600 text-sm">
+                      BSP, ndc, afwc, psc
+                    </p>
+                    <p className="text-gray-600 text-sm font-medium">
+                      Commandant, MIST
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="order-1 md:order-2">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="relative"
+                >
+                  <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
+                    <img 
+                      src="https://mist.ac.bd/storage/files/cmdt_20241.jpeg" 
+                      alt="Maj Gen Md Nasim Parvez, Commandant of MIST" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                    <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+        {/* Background decorative elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-200/30 to-indigo-300/30 rounded-full -translate-y-32 translate-x-32"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-indigo-200/30 to-blue-300/30 rounded-full translate-y-24 -translate-x-24"></div>
+      </section>
+
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12">
             What Our Members Say
