@@ -11,12 +11,15 @@ interface CommitteeItem {
   id: string;
   image_url: string;
   panel_year: string;
+  panel_type: string;
 }
 
 export default function CommitteePage() {
   const [committee, setCommittee] = useState<CommitteeItem[]>([]);
   const [availableYears, setAvailableYears] = useState<string[]>([]);
+  const [availableTypes, setAvailableTypes] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<string>("presidential");
   const [loading, setLoading] = useState(true);
 
   // Fetch available years on component mount
@@ -68,17 +71,47 @@ export default function CommitteePage() {
     fetchYears();
   }, []);
 
-  // Fetch committee data when selected year changes
+  // Fetch available panel types when selected year changes
+  useEffect(() => {
+    async function fetchTypes() {
+      if (!selectedYear) return;
+      
+      try {
+        const res = await fetch(`${backend}/api/committees/types/${selectedYear}`);
+        if (res.ok) {
+          const types = await res.json();
+          setAvailableTypes(types);
+          // Set default type to presidential if available, otherwise first available type
+          if (types.length > 0) {
+            const defaultType = types.includes("presidential") ? "presidential" : types[0];
+            setSelectedType(defaultType);
+          }
+        } else {
+          console.error("Error fetching types:", res.status);
+          setAvailableTypes(["presidential"]); // fallback
+          setSelectedType("presidential");
+        }
+      } catch (err) {
+        console.error("Error fetching types:", err);
+        setAvailableTypes(["presidential"]); // fallback
+        setSelectedType("presidential");
+      }
+    }
+
+    fetchTypes();
+  }, [selectedYear]);
+
+  // Fetch committee data when selected year or type changes
   useEffect(() => {
     async function fetchCommittee() {
-      if (!selectedYear) return;
+      if (!selectedYear || !selectedType) return;
       
       setLoading(true);
       try {
-        const res = await fetch(`${backend}/api/committees?year=${selectedYear}`);
+        const res = await fetch(`${backend}/api/committees?year=${selectedYear}&type=${selectedType}`);
         const data = await res.json();
         setCommittee(data);
-        console.log(`Committee data for year ${selectedYear}:`, data);
+        console.log(`Committee data for ${selectedYear} ${selectedType}:`, data);
       } catch (err) {
         console.error("Error fetching committee:", err);
         setCommittee([]);
@@ -88,7 +121,7 @@ export default function CommitteePage() {
     }
 
     fetchCommittee();
-  }, [selectedYear]);
+  }, [selectedYear, selectedType]);
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
@@ -104,24 +137,46 @@ export default function CommitteePage() {
           events, and leading our community.
         </p>
         
-        {/* Year Selection */}
+        {/* Year and Type Selection */}
         {availableYears.length > 0 && (
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <label htmlFor="year-select" className="text-sm font-medium text-gray-700">
-              Select Committee Year:
-            </label>
-            <Select value={selectedYear} onValueChange={setSelectedYear}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Choose a year" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableYears.map((year) => (
-                  <SelectItem key={year} value={year}>
-                    {year} Committee
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="mt-6 flex flex-col lg:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-2">
+              <label htmlFor="year-select" className="text-sm font-medium text-gray-700">
+                Committee Year:
+              </label>
+              <Select value={selectedYear} onValueChange={setSelectedYear}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Choose year" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableYears.map((year) => (
+                    <SelectItem key={year} value={year}>
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {availableTypes.length > 0 && (
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                <label htmlFor="type-select" className="text-sm font-medium text-gray-700">
+                  Panel Type:
+                </label>
+                <Select value={selectedType} onValueChange={setSelectedType}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Choose type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
         )}
       </header>
@@ -154,18 +209,20 @@ export default function CommitteePage() {
         <p className="text-center text-gray-500 py-10">Loading committee...</p>
       ) : committee.length === 0 ? (
         <div className="text-center text-gray-500 py-10">
-          <p className="mb-2">No committee members found for {selectedYear}.</p>
-          {selectedYear && (
-            <p className="text-sm">Try selecting a different year from the dropdown above.</p>
+          <p className="mb-2">
+            No committee members found for {selectedYear} {selectedType} panel.
+          </p>
+          {selectedYear && selectedType && (
+            <p className="text-sm">Try selecting a different year or panel type from the dropdowns above.</p>
           )}
         </div>
       ) : (
         <div>
-          {/* Display current year selection */}
-          {selectedYear && (
+          {/* Display current selection */}
+          {selectedYear && selectedType && (
             <div className="text-center mb-6">
               <h2 className="text-2xl font-semibold text-gray-800">
-                {selectedYear} Committee Panel
+                {selectedYear} {selectedType.charAt(0).toUpperCase() + selectedType.slice(1)} Panel
               </h2>
               <p className="text-gray-600 text-sm">
                 {committee.length} member{committee.length !== 1 ? 's' : ''}
@@ -182,7 +239,7 @@ export default function CommitteePage() {
                 <CardContent className="p-0">
                   <img
                     src={member.image_url}
-                    alt={`Committee Member - ${selectedYear}`}
+                    alt={`${selectedType.charAt(0).toUpperCase() + selectedType.slice(1)} Panel Member - ${selectedYear}`}
                     className="w-full h-auto object-cover"
                     loading="lazy"
                   />
