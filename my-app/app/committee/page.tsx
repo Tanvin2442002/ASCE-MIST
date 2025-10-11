@@ -77,23 +77,53 @@ export default function CommitteePage() {
       if (!selectedYear) return;
       
       try {
-        const res = await fetch(`${backend}/api/committees/types/${selectedYear}`);
-        if (res.ok) {
-          const types = await res.json();
+        console.log(`Fetching types for year: ${selectedYear}`);
+        // Try the dedicated endpoint first
+        const typesRes = await fetch(`${backend}/api/committees/types/${selectedYear}`);
+        
+        if (typesRes.ok) {
+          const types = await typesRes.json();
+          console.log("Available types from API:", types);
           setAvailableTypes(types);
           // Set default type to presidential if available, otherwise first available type
           if (types.length > 0) {
             const defaultType = types.includes("presidential") ? "presidential" : types[0];
             setSelectedType(defaultType);
           }
+          return;
         } else {
-          console.error("Error fetching types:", res.status);
-          setAvailableTypes(["presidential"]); // fallback
-          setSelectedType("presidential");
+          console.log("Types endpoint failed, trying fallback...");
         }
       } catch (err) {
-        console.error("Error fetching types:", err);
-        setAvailableTypes(["presidential"]); // fallback
+        console.log("Types endpoint error, trying fallback...", err);
+      }
+
+      // Fallback: Get all committees for the year and extract unique types
+      try {
+        const committeesRes = await fetch(`${backend}/api/committees?year=${selectedYear}`);
+        if (committeesRes.ok) {
+          const committees = await committeesRes.json();
+          console.log("All committees for year:", committees);
+          const extractedTypes = [...new Set(committees.map((c: CommitteeItem) => c.panel_type))].filter(Boolean) as string[];
+          console.log("Extracted types:", extractedTypes);
+          
+          setAvailableTypes(extractedTypes);
+          if (extractedTypes.length > 0) {
+            const defaultType = extractedTypes.includes("presidential") ? "presidential" : extractedTypes[0];
+            setSelectedType(defaultType);
+          } else {
+            // Ultimate fallback
+            setAvailableTypes(["presidential", "executive"]);
+            setSelectedType("presidential");
+          }
+        } else {
+          console.error("Fallback committees fetch also failed");
+          setAvailableTypes(["presidential", "executive"]);
+          setSelectedType("presidential");
+        }
+      } catch (fallbackErr) {
+        console.error("Complete fallback failed:", fallbackErr);
+        setAvailableTypes(["presidential", "executive"]);
         setSelectedType("presidential");
       }
     }
@@ -104,14 +134,25 @@ export default function CommitteePage() {
   // Fetch committee data when selected year or type changes
   useEffect(() => {
     async function fetchCommittee() {
-      if (!selectedYear || !selectedType) return;
+      if (!selectedYear || !selectedType) {
+        console.log("Missing year or type:", { selectedYear, selectedType });
+        return;
+      }
       
       setLoading(true);
       try {
-        const res = await fetch(`${backend}/api/committees?year=${selectedYear}&type=${selectedType}`);
-        const data = await res.json();
-        setCommittee(data);
-        console.log(`Committee data for ${selectedYear} ${selectedType}:`, data);
+        const url = `${backend}/api/committees?year=${selectedYear}&type=${selectedType}`;
+        console.log("Fetching committee from:", url);
+        const res = await fetch(url);
+        
+        if (res.ok) {
+          const data = await res.json();
+          console.log(`Committee data for ${selectedYear} ${selectedType}:`, data);
+          setCommittee(data);
+        } else {
+          console.error("Failed to fetch committee:", res.status, res.statusText);
+          setCommittee([]);
+        }
       } catch (err) {
         console.error("Error fetching committee:", err);
         setCommittee([]);
@@ -169,9 +210,9 @@ export default function CommitteePage() {
                   </SelectTrigger>
                   <SelectContent>
                     {availableTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
-                      </SelectItem>
+                    <SelectItem key={type} value={type}>
+                      {type === "presidential" ? "Presidential" : type === "executive" ? "Executive" : type.charAt(0).toUpperCase() + type.slice(1)}
+                    </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
