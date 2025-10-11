@@ -34,7 +34,7 @@ export default function CommitteePage() {
           throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         }
         
-        const years = await res.json();
+        const years = await res.json() as string[];
         setAvailableYears(years);
         console.log("Available years:", years);
         // Set current year as default if available
@@ -50,8 +50,9 @@ export default function CommitteePage() {
           console.log("Trying fallback approach...");
           const res = await fetch(`${backend}/api/committees`);
           if (res.ok) {
-            const allCommittees = await res.json();
-            const extractedYears = [...new Set(allCommittees.map((c: CommitteeItem) => c.panel_year))].filter(Boolean).sort().reverse();
+            const allCommittees = await res.json() as CommitteeItem[];
+            const extractedYears = Array.from(new Set(allCommittees.map((c: CommitteeItem) => c.panel_year))).filter(Boolean) as string[];
+            extractedYears.sort().reverse();
             setAvailableYears(extractedYears);
             if (extractedYears.length > 0) {
               const currentYear = new Date().getFullYear().toString();
