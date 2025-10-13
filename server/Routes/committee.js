@@ -32,7 +32,7 @@ router.get("/committees/types/:year", async (req, res) => {
     
     res.status(200).json(types.map(row => row.panel_type));
   } catch (error) {
-    console.error("Error fetching committee types:", error);
+    // console.error("Error fetching committee types:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -49,10 +49,11 @@ router.get("/committees", async (req, res) => {
           id,
           image_url,
           panel_year,
-          panel_type
+          panel_type,
+          priority
         FROM public.committee_images
         WHERE panel_year = ${year} AND panel_type = ${type}
-        ORDER BY id
+        ORDER BY priority ASC NULLS LAST
       `;
     } else if (year) {
       // Filter by year only (default to presidential if no type specified)
@@ -61,10 +62,11 @@ router.get("/committees", async (req, res) => {
           id,
           image_url,
           panel_year,
-          panel_type
+          panel_type,
+          priority
         FROM public.committee_images
         WHERE panel_year = ${year}
-        ORDER BY panel_type, id
+        ORDER BY priority ASC NULLS LAST
       `;
     } else {
       // Get all committees with their years and types
@@ -73,15 +75,17 @@ router.get("/committees", async (req, res) => {
           id,
           image_url,
           panel_year,
-          panel_type
+          panel_type,
+          priority
         FROM public.committee_images
-        ORDER BY panel_year DESC, panel_type, id
+        ORDER BY priority ASC NULLS LAST
       `;
     }
 
+    // console.log("Committee data with priorities:", committees.map(c => ({ id: c.id, priority: c.priority, panel_type: c.panel_type })));
     res.status(200).json(committees);
   } catch (error) {
-    console.error("Error fetching committees:", error);
+    // console.error("Error fetching committees:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

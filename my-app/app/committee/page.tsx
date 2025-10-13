@@ -12,6 +12,7 @@ interface CommitteeItem {
   image_url: string;
   panel_year: string;
   panel_type: string;
+  priority: number | null;
 }
 
 export default function CommitteePage() {

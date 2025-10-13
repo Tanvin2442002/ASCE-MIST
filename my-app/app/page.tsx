@@ -162,7 +162,9 @@ export default function HomePage() {
                         <div className="flex items-center text-sm text-muted-foreground">
                           <Calendar className="w-4 h-4 mr-1" />
                           {announcement.created_at
-                            ? new Date(announcement.created_at).toLocaleDateString()
+                            ? new Date(
+                                announcement.created_at
+                              ).toLocaleDateString()
                             : ""}
                         </div>
                       </div>
@@ -304,7 +306,10 @@ export default function HomePage() {
       <CurvyDivider className="text-card rotate-180" />
 
       {/* Events Section */}
-      <section id="events" className="py-16 bg-card/30 relative overflow-hidden">
+      <section
+        id="events"
+        className="py-16 bg-card/30 relative overflow-hidden"
+      >
         <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-2xl animate-blob" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.h2
@@ -413,27 +418,28 @@ export default function HomePage() {
                   Message from Leadership
                 </h2>
                 <blockquote className="text-lg text-gray-700 leading-relaxed mb-6 italic">
-                  &quot;The ASCE Student Chapter at MIST represents the future of civil engineering in Bangladesh. 
-                  Through innovative thinking, collaborative learning, and practical application of engineering principles, 
-                  our students are preparing to tackle the infrastructure challenges of tomorrow. 
-                  I am proud to witness their dedication to excellence and their commitment to building a better, 
-                  more sustainable future for our nation.&quot;
+                  &quot;The ASCE Student Chapter at MIST represents the future
+                  of civil engineering in Bangladesh. Through innovative
+                  thinking, collaborative learning, and practical application of
+                  engineering principles, our students are preparing to tackle
+                  the infrastructure challenges of tomorrow. I am proud to
+                  witness their dedication to excellence and their commitment to
+                  building a better, more sustainable future for our
+                  nation.&quot;
                 </blockquote>
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                    <img 
-                      src="https://mist.ac.bd/storage/files/ce/WhatsApp%20Image%202025-01-11%20at%2015.06.05_f543d5cd.jpg" 
-                      alt="Brig General A N M Foyezur Rahman" 
+                    <img
+                      src="https://mist.ac.bd/storage/files/ce/WhatsApp%20Image%202025-01-11%20at%2015.06.05_f543d5cd.jpg"
+                      alt="Brig General A N M Foyezur Rahman"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div>
                     <p className="font-bold text-gray-900 text-lg">
-                     Brig General A N M Foyezur Rahman
+                      Brig General A N M Foyezur Rahman
                     </p>
-                    <p className="text-gray-600 text-sm">
-                      ndc, psc
-                    </p>
+                    <p className="text-gray-600 text-sm">ndc, psc</p>
                     <p className="text-gray-600 text-sm font-medium">
                       Head of the Department of CE, MIST
                     </p>
@@ -448,15 +454,19 @@ export default function HomePage() {
                   className="relative"
                 >
                   <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
-                    <img 
-                      src="https://mist.ac.bd/storage/files/ce/WhatsApp%20Image%202025-01-11%20at%2015.06.05_f543d5cd.jpg" 
-                      alt="Brig General A N M Foyezur Rahman, ndc, psc" 
+                    <img
+                      src="https://mist.ac.bd/storage/files/ce/WhatsApp%20Image%202025-01-11%20at%2015.06.05_f543d5cd.jpg"
+                      alt="Brig General A N M Foyezur Rahman, ndc, psc"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
-                    <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <svg
+                      className="w-12 h-12 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                 </motion.div>
@@ -467,6 +477,83 @@ export default function HomePage() {
         {/* Background decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-200/30 to-indigo-300/30 rounded-full -translate-y-32 translate-x-32"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-indigo-200/30 to-blue-300/30 rounded-full translate-y-24 -translate-x-24"></div>
+      </section>
+
+      {/* Faculty Advisor Message Section */}
+      <section className="py-12 bg-gradient-to-l from-green-50 to-emerald-50 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="grid md:grid-cols-3 gap-8 items-center">
+              <div className="md:col-span-2 order-2 md:order-1">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  Faculty Advisor's Message
+                </h3>
+                <blockquote className="text-gray-700 leading-relaxed mb-4 italic">
+                  &quot;As Faculty Advisor of the ASCE Student Chapter at MIST,
+                  I am continually inspired by our students' passion for civil
+                  engineering excellence. Their dedication to learning,
+                  innovation, and professional development makes me confident
+                  they will become the leaders who will shape the future of
+                  infrastructure and construction in Bangladesh and
+                  beyond.&quot;
+                </blockquote>
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+                    <img
+                      src="https://mist.ac.bd/storage/files/ce/image/Sakil-sir.jpeg"
+                      alt="Lt Col Khondaker Sakil Ahmed"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-bold text-gray-900">
+                      Lt Col Khondaker Sakil Ahmed, PhD, PEng, Engrs
+                    </p>
+                    <p className="text-gray-600 text-sm">
+                      Associate Professor, Department of Civil Engineering (CE)
+                    </p>
+                    <p className="text-gray-600 text-sm font-medium">
+                      Faculty Advisor, ASCE Student Chapter, MIST
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="order-1 md:order-2">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="relative"
+                >
+                  <div className="aspect-square rounded-xl overflow-hidden shadow-lg border-4 border-white">
+                    <img
+                      src="https://mist.ac.bd/storage/files/ce/image/Sakil-sir.jpeg"
+                      alt="Lt Col Khondaker Sakil Ahmed, Faculty Advisor"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+                    <svg
+                      className="w-8 h-8 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.84L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.84l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                    </svg>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-green-200/20 to-emerald-300/20 rounded-full -translate-y-20 -translate-x-20"></div>
+        <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-emerald-200/20 to-green-300/20 rounded-full translate-y-16 translate-x-16"></div>
       </section>
 
       <section className="py-16">
@@ -531,25 +618,24 @@ export default function HomePage() {
             <Card className="h-full flex flex-col">
               <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
-                  &quot;The research opportunities and mentorship from faculty
-                  advisors have been invaluable for my academic and professional
-                  development.&quot;
+                  &quot;Being part of the ASCE Student Chapter has given me
+                  amazing research opportunities, and the guidance from our
+                  faculty advisors has really helped me learn and grow
+                  professionally.&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent className="mt-auto">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-semibold">
-                      KS
+                      AAI
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-foreground">
-                      Dr. Khondokar Shakil Ahmed, PEng, CEng, FICE
+                      Ahsan Azim Imran
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      Faculty Advisor
-                    </p>
+                    <p className="text-sm text-muted-foreground">Director</p>
                   </div>
                 </div>
               </CardContent>
