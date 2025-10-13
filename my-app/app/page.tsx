@@ -488,12 +488,12 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="max-w-4xl mx-auto"
           >
-            <div className="grid md:grid-cols-3 gap-8 items-center">
-              <div className="md:col-span-2 order-2 md:order-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+              <div className="order-2 md:order-1">
+                <h3 className="text-3xl font-bold text-gray-900 mb-6">
                   Faculty Advisor&apos;s Message
                 </h3>
-                <blockquote className="text-gray-700 leading-relaxed mb-4 italic">
+                <blockquote className="text-lg text-gray-700 leading-relaxed mb-6 italic">
                   &quot;As Faculty Advisor of the ASCE Student Chapter at MIST,
                   I am continually inspired by our students&apos; passion for civil
                   engineering excellence. Their dedication to learning,
@@ -502,8 +502,8 @@ export default function HomePage() {
                   infrastructure and construction in Bangladesh and
                   beyond.&quot;
                 </blockquote>
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-md">
                     <img
                       src="https://mist.ac.bd/storage/files/ce/image/Sakil-sir.jpeg"
                       alt="Lt Col Khondaker Sakil Ahmed"
@@ -530,16 +530,16 @@ export default function HomePage() {
                   transition={{ duration: 0.5, delay: 0.1 }}
                   className="relative"
                 >
-                  <div className="aspect-square rounded-xl overflow-hidden shadow-lg border-4 border-white">
+                  <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
                     <img
                       src="https://mist.ac.bd/storage/files/ce/image/Sakil-sir.jpeg"
                       alt="Lt Col Khondaker Sakil Ahmed, Faculty Advisor"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
                     <svg
-                      className="w-8 h-8 text-white"
+                      className="w-12 h-12 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
