@@ -495,7 +495,7 @@ export default function HomePage() {
                 </h3>
                 <blockquote className="text-gray-700 leading-relaxed mb-4 italic">
                   &quot;As Faculty Advisor of the ASCE Student Chapter at MIST,
-                  I am continually inspired by our students' passion for civil
+                  I am continually inspired by our students&apos; passion for civil
                   engineering excellence. Their dedication to learning,
                   innovation, and professional development makes me confident
                   they will become the leaders who will shape the future of
