@@ -491,7 +491,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-3 gap-8 items-center">
               <div className="md:col-span-2 order-2 md:order-1">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Faculty Advisor's Message
+                  Faculty Advisor&apos;s Message
                 </h3>
                 <blockquote className="text-gray-700 leading-relaxed mb-4 italic">
                   &quot;As Faculty Advisor of the ASCE Student Chapter at MIST,
