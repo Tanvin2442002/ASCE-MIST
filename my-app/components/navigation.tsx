@@ -77,7 +77,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
             <img src="/LOGO.jpg" alt="ASCE MIST" className="object-contain w-12 h-12" />
             <div>
               <h1 className="font-bold text-lg md:text-xl text-gray-900">ASCE STUDENT CHAPTER, MIST</h1>
-              <p className="text-xs md:text-sm text-gray-600 hidden sm:block">
+              <p className="text-xl md:text-xl text-gray-600 hidden sm:block">
                 Military Institute of Science and Technology
               </p>
             </div>

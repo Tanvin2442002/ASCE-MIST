@@ -114,7 +114,6 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
             alt={seminar.title}
             className="w-full h-96 object-cover rounded-lg shadow-lg"
           />
-          <p className="text-center text-sm text-gray-600 mt-2">Seminar participants and faculty members</p>
         </div>
 
         {/* Speaker Info */}

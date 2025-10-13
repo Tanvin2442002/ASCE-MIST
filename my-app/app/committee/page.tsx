@@ -224,25 +224,28 @@ export default function CommitteePage() {
       </header>
 
       {/* Faculty Advisor Section */}
-      <section className="flex flex-col md:flex-row items-center gap-6 mb-8">
-        <div className="w-36 h-36 flex-shrink-0 rounded-xl overflow-hidden shadow">
-          <img
-            src="https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/committee/Sakil-sir.jpeg"
-            alt="Faculty Advisor"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-semibold">
-            Dr. Khondokar Shakil Ahmed, PEng, CEng, FICE
+      <section className="mb-8">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Faculty Advisor
           </h2>
-          <p className="text-sm text-gray-600">
-            Faculty Advisor — ASCE Student Chapter, MIST
+          <p className="text-gray-600 text-sm mt-2">
+            Dr. Khondokar Shakil Ahmed, PEng, CEng, FICE
           </p>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="text-gray-500 text-sm">
             Department of Civil Engineering, MIST
           </p>
+        </div>
+        
+        {/* Faculty Advisor Poster */}
+        <div className="flex justify-center">
+          <div className="max-w-md w-full rounded-2xl overflow-hidden shadow-lg bg-white">
+            <img
+              src="https://vlkrukgfzsincfebbndz.supabase.co/storage/v1/object/public/committee_executive/Faculty%20Advisor%204.png"
+              alt="Faculty Advisor - Dr. Khondokar Shakil Ahmed"
+              className="w-full h-auto object-contain"
+            />
+          </div>
         </div>
       </section>
 
