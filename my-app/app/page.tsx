@@ -429,13 +429,13 @@ export default function HomePage() {
                   </div>
                   <div>
                     <p className="font-bold text-gray-900 text-lg">
-                      Maj Gen Md Nasim Parvez
+                     Brig General A N M Foyezur Rahman
                     </p>
                     <p className="text-gray-600 text-sm">
-                      BSP, ndc, afwc, psc
+                      ndc, psc
                     </p>
                     <p className="text-gray-600 text-sm font-medium">
-                      Commandant, MIST
+                      Head of the Department of CE, MIST
                     </p>
                   </div>
                 </div>
@@ -449,8 +449,8 @@ export default function HomePage() {
                 >
                   <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
                     <img 
-                      src="https://mist.ac.bd/storage/files/cmdt_20241.jpeg" 
-                      alt="Maj Gen Md Nasim Parvez, Commandant of MIST" 
+                      src="https://mist.ac.bd/storage/files/ce/WhatsApp%20Image%202025-01-11%20at%2015.06.05_f543d5cd.jpg" 
+                      alt="Brig General A N M Foyezur Rahman, ndc, psc" 
                       className="w-full h-full object-cover"
                     />
                   </div>
