@@ -87,7 +87,7 @@ export default function SiteVisitPage() {
                       src={visit.image_urls?.[0] || "/placeholder.svg"}
                       alt={visit.title}
                       className="w-full h-full object-cover"
-                      style={{ objectPosition: "50% 70%" }} 
+                      style={{ objectPosition: "50% 60%" }} 
                     />
                   </div>
 

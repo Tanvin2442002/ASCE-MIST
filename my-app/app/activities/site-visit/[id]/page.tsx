@@ -83,7 +83,7 @@ export default function SiteVisitDetailPage({ params }: PageProps) {
         src={src}
         alt={alt || ""}
         className="w-full h-full object-cover"
-        style={{ objectPosition: "50% 70%" }}
+        style={{ objectPosition: "50% 60%" }}
       />
     </div>
   )
