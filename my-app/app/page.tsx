@@ -422,8 +422,8 @@ export default function HomePage() {
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg">
                     <img 
-                      src="https://mist.ac.bd/storage/files/cmdt_20241.jpeg" 
-                      alt="Maj Gen Md Nasim Parvez" 
+                      src="https://mist.ac.bd/storage/files/ce/WhatsApp%20Image%202025-01-11%20at%2015.06.05_f543d5cd.jpg" 
+                      alt="Brig General A N M Foyezur Rahman" 
                       className="w-full h-full object-cover"
                     />
                   </div>
