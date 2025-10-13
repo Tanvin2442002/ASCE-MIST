@@ -619,7 +619,7 @@ export default function HomePage() {
               <CardHeader className="flex-1">
                 <CardDescription className="text-base italic">
                   &quot;Being part of the ASCE Student Chapter has given me
-                  amazing research opportunities, and the guidance from our
+                  amazing research opportunities and the guidance from our
                   faculty advisors has really helped me learn and grow
                   professionally.&quot;
                 </CardDescription>
