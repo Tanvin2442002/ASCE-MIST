@@ -12,7 +12,11 @@ const committee = require('./Routes/committee');
 const achievements = require('./Routes/achievements');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://asce-mist.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use('/api', announcement);
