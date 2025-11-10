@@ -448,7 +448,7 @@ export default function HomePage() {
                 >
                   <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
                     <img
-                      src="https://mist.ac.bd/storage/files/ce/WhatsApp%20Image%202025-01-11%20at%2015.06.05_f543d5cd.jpg"
+                      src="/head.jpg"
                       alt="Brig General A N M Foyezur Rahman, ndc, psc"
                       className="w-full h-full object-cover"
                     />
