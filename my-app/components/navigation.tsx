@@ -36,13 +36,22 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
 
   const activitiesRef = useRef<HTMLDivElement>(null)
   const desktopMenuRef = useRef<HTMLDivElement>(null)
+  const mobileActivitiesRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (activitiesRef.current && !activitiesRef.current.contains(event.target as Node)) {
+      const target = event.target as Node
+      const clickedInsideDesktopActivities = activitiesRef.current?.contains(target)
+      const clickedInsideMobileActivities = mobileActivitiesRef.current?.contains(target)
+      const clickedInsideDesktopMenu = desktopMenuRef.current?.contains(target)
+
+      // Only close Activities if the click is outside BOTH desktop and mobile Activities containers
+      if (!clickedInsideDesktopActivities && !clickedInsideMobileActivities) {
         setIsActivitiesOpen(false)
       }
-      if (desktopMenuRef.current && !desktopMenuRef.current.contains(event.target as Node)) {
+
+      // Close the desktop overflow menu if clicked outside it
+      if (!clickedInsideDesktopMenu) {
         setIsDesktopMenuOpen(false)
       }
     }
@@ -193,7 +202,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
               {navigationLinks.map((link) => {
                 if (link.name === "Activities") {
                   return (
-                    <div key={link.name}>
+                    <div key={link.name} ref={mobileActivitiesRef}>
                       <button
                         onClick={toggleActivities}
                         className={`w-full text-left px-3 py-3 text-sm font-medium rounded-md transition-all duration-300 relative flex items-center justify-between ${
