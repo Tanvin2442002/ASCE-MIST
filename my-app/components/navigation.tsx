@@ -69,7 +69,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
   const secondaryLinks = navigationLinks.slice(5)
 
   return (
-    <header className="border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50">
+    <header className="border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-[110]">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo/Title */}
@@ -105,7 +105,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                       </button>
 
                       {isActivitiesOpen && (
-                        <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50">
+                        <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-[110]">
                           {activitiesDropdown.map((item) => (
                             <Link
                               key={item.name}
@@ -188,7 +188,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 pb-4 border-t border-gray-200 relative z-50">
+          <div className="lg:hidden mt-4 pb-4 border-t border-gray-200 relative z-[110]">
             <nav className="flex flex-col space-y-1 pt-4">
               {navigationLinks.map((link) => {
                 if (link.name === "Activities") {
@@ -209,7 +209,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                       </button>
 
                       {isActivitiesOpen && (
-                        <div className="ml-4 mt-1 space-y-1 relative z-50">
+                        <div className="ml-4 mt-1 space-y-1 relative z-[110]">
                           {activitiesDropdown.map((item) => (
                             <Link
                               key={item.name}
