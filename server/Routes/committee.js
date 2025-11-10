@@ -82,7 +82,7 @@ router.get("/committees", async (req, res) => {
       `;
     }
 
-    // console.log("Committee data with priorities:", committees.map(c => ({ id: c.id, priority: c.priority, panel_type: c.panel_type })));
+  // (debug logs removed)
     res.status(200).json(committees);
   } catch (error) {
     // console.error("Error fetching committees:", error);

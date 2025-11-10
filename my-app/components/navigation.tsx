@@ -188,7 +188,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 pb-4 border-t border-gray-200">
+          <div className="lg:hidden mt-4 pb-4 border-t border-gray-200 relative z-50">
             <nav className="flex flex-col space-y-1 pt-4">
               {navigationLinks.map((link) => {
                 if (link.name === "Activities") {
@@ -209,7 +209,7 @@ export default function Navigation({ currentPath = "/" }: NavigationProps) {
                       </button>
 
                       {isActivitiesOpen && (
-                        <div className="ml-4 mt-1 space-y-1">
+                        <div className="ml-4 mt-1 space-y-1 relative z-50">
                           {activitiesDropdown.map((item) => (
                             <Link
                               key={item.name}

@@ -88,7 +88,7 @@ export default function NewSiteVisit() {
         throw new Error(err?.error || `Request failed with status ${resp.status}`)
       }
 
-      const created = await resp.json()
+  const created = await resp.json()
       setSuccess("Site visit created successfully.")
       setFormData({
         title: "",
@@ -102,8 +102,7 @@ export default function NewSiteVisit() {
         category: "",
         status: "draft",
       })
-      setFiles([])
-      console.log("created site visit:", created)
+  setFiles([])
     } catch (err) {
       console.error(err)
       setError(

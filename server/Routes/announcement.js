@@ -30,7 +30,7 @@ router.get("/announcements", async (req, res) => {
       FROM public.announcements
       ORDER BY created_at DESC;
     `;
-    // console.log("Fetched announcements:", announcements);
+  // (debug logs removed)
     res.status(200).json(announcements);
   } catch (error) {
     console.error("Error fetching announcements:", error);

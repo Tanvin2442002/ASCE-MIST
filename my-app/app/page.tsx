@@ -71,21 +71,14 @@ export default function HomePage() {
   }, []);
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation Component */}
-      {/* <Navigation currentPath="/" /> */}
-
-      {/* =========================
-          HERO (video confined to this block)
-          ========================= */}
       <header
         id="hero"
         className="relative min-h-[60vh] md:min-h-screen max-h-[60vh] flex items-center"
         aria-label="Hero"
       >
-        {/* video layer (absolute inside header only) */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center bg-white">
           <video
-            className="w-full h-full object-cover"
+            className="w-screen h-auto max-w-none object-contain object-center"
             src="/MIST.mp4"
             poster="/placeholder.svg"
             autoPlay

@@ -26,18 +26,16 @@ export default function CommitteePage() {
   // Fetch available years on component mount
   useEffect(() => {
     async function fetchYears() {
-      try {
-        console.log("Fetching years from:", `${backend}/api/committees/years`);
-        const res = await fetch(`${backend}/api/committees/years`);
+  try {
+  const res = await fetch(`${backend}/api/committees/years`);
         
         if (!res.ok) {
           console.error("Response not ok:", res.status, res.statusText);
           throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         }
         
-        const years = await res.json() as string[];
-        setAvailableYears(years);
-        console.log("Available years:", years);
+  const years = await res.json() as string[];
+  setAvailableYears(years);
         // Set current year as default if available
         if (years.length > 0) {
           const currentYear = new Date().getFullYear().toString();
@@ -48,7 +46,7 @@ export default function CommitteePage() {
         console.error("Error fetching years:", err);
         // Fallback: try to get years from all committees
         try {
-          console.log("Trying fallback approach...");
+          // trying fallback approach to derive years
           const res = await fetch(`${backend}/api/committees`);
           if (res.ok) {
             const allCommittees = await res.json() as CommitteeItem[];
@@ -63,7 +61,7 @@ export default function CommitteePage() {
           } else {
             setAvailableYears([]);
           }
-        } catch (fallbackErr) {
+          } catch (fallbackErr) {
           console.error("Fallback also failed:", fallbackErr);
           setAvailableYears([]);
         }
@@ -79,13 +77,12 @@ export default function CommitteePage() {
       if (!selectedYear) return;
       
       try {
-        console.log(`Fetching types for year: ${selectedYear}`);
+        // fetching panel types for selected year
         // Try the dedicated endpoint first
         const typesRes = await fetch(`${backend}/api/committees/types/${selectedYear}`);
         
         if (typesRes.ok) {
           const types = await typesRes.json();
-          console.log("Available types from API:", types);
           setAvailableTypes(types);
           // Set default type to presidential if available, otherwise first available type
           if (types.length > 0) {
@@ -94,10 +91,10 @@ export default function CommitteePage() {
           }
           return;
         } else {
-          console.log("Types endpoint failed, trying fallback...");
+          // types endpoint failed, will try fallback
         }
       } catch (err) {
-        console.log("Types endpoint error, trying fallback...", err);
+        console.error("Types endpoint error, trying fallback...", err);
       }
 
       // Fallback: Get all committees for the year and extract unique types
@@ -105,9 +102,8 @@ export default function CommitteePage() {
         const committeesRes = await fetch(`${backend}/api/committees?year=${selectedYear}`);
         if (committeesRes.ok) {
           const committees = await committeesRes.json();
-          console.log("All committees for year:", committees);
           const extractedTypes = [...new Set(committees.map((c: CommitteeItem) => c.panel_type))].filter(Boolean) as string[];
-          console.log("Extracted types:", extractedTypes);
+          // extracted types derived from fallback
           
           setAvailableTypes(extractedTypes);
           if (extractedTypes.length > 0) {
@@ -137,19 +133,17 @@ export default function CommitteePage() {
   useEffect(() => {
     async function fetchCommittee() {
       if (!selectedYear || !selectedType) {
-        console.log("Missing year or type:", { selectedYear, selectedType });
+        // missing required selections
         return;
       }
       
       setLoading(true);
       try {
-        const url = `${backend}/api/committees?year=${selectedYear}&type=${selectedType}`;
-        console.log("Fetching committee from:", url);
-        const res = await fetch(url);
+  const url = `${backend}/api/committees?year=${selectedYear}&type=${selectedType}`;
+  const res = await fetch(url);
         
         if (res.ok) {
           const data = await res.json();
-          console.log(`Committee data for ${selectedYear} ${selectedType}:`, data);
           setCommittee(data);
         } else {
           console.error("Failed to fetch committee:", res.status, res.statusText);

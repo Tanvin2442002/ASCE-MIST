@@ -13,7 +13,6 @@ export default function ContactPage(): JSX.Element {
     (process.env.NEXT_PUBLIC_GOOGLE as string) ||
     (process.env.GOOGLE as string) ||
     "";
-  console.log("Google Maps API Key:", apiKey ? "Detected" : "Not Detected");
 
   const placeQuery =
     "Military Institute of Science and Technology, Dhaka, Bangladesh";

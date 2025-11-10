@@ -69,7 +69,7 @@ router.post(
         if (publicUrl) imageUrls.push(publicUrl);
       }
 
-      console.log("DEBUG imageUrls:", imageUrls);
+  // imageUrls collected for upload
 
       // Convert JS array to PostgreSQL array literal
       const imageArrayParam =
@@ -105,7 +105,7 @@ router.post(
     ${imageArrayParam}
   ) RETURNING *;
 `;
-  console.log("Inserted site visit:", inserted);
+    // inserted site visit record returned
       res.status(201).json(inserted);
     } catch (error) {
       console.error("Error creating site visit:", error);
