@@ -13,7 +13,7 @@ const achievements = require('./Routes/achievements');
 
 const app = express();
 app.use(cors({
-  origin: "https://asce-mist.vercel.app",
+  origin: ["https://asce-mist.vercel.app","https://asce-ce.mist.ac.bd/"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
