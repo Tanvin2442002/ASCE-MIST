@@ -150,7 +150,8 @@ router.get("/events", async (req, res) => {
         highlights,
         organizers
       FROM public.events
-      ORDER BY date DESC;
+      WHERE date >= CURRENT_DATE
+      ORDER BY date ASC
     `;
     res.status(200).json(events);
   } catch (error) {

@@ -9,9 +9,56 @@ import Link from "next/link"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "ASCE Student Chapter, MIST",
-  description: "Created with Next.js",
-  generator: "Next.js",
+  title: {
+    default: "ASCE Student Chapter, MIST",
+    template: "%s | ASCE MIST",
+  },
+  description:
+    "Official website of the ASCE Student Chapter at Military Institute of Science and Technology (MIST). Explore activities, seminars, webinars, site visits, achievements, and membership.",
+  keywords: [
+    "MIST ASCE",
+    "ASCE MIST",
+    "ASCE Student Chapter",
+    "Student Chapter MIST",
+    "Military Institute of Science and Technology",
+    "Civil Engineering",
+    "Seminar",
+    "Webinar",
+    "Site Visit",
+    "Achievements",
+    "Membership",
+  ],
+  alternates: {
+    canonical: "https://asce-ce.mist.ac.bd/",
+  },
+  openGraph: {
+    type: "website",
+    url: "https://asce-ce.mist.ac.bd/",
+    title: "ASCE Student Chapter, MIST",
+    siteName: "ASCE MIST",
+    description: "Official website of the ASCE Student Chapter at Military Institute of Science and Technology (MIST). Explore activities, seminars, webinars, site visits, achievements, and membership.",
+    images: [{ url: "/images/og-default.png" }],
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ASCE Student Chapter, MIST",
+    description: "Official website of the ASCE Student Chapter at Military Institute of Science and Technology (MIST). Explore activities, seminars, webinars, site visits, achievements, and membership.",
+    images: ["/images/og-default.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 }
 
 export default function RootLayout({
@@ -118,6 +165,37 @@ export default function RootLayout({
           </div>
         </footer>
         <Analytics />
+        {/* JSON-LD: Website + Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  name: "ASCE Student Chapter, MIST",
+                  url: "https://asce-ce.mist.ac.bd/",
+                  sameAs: [
+                    "https://www.facebook.com/p/ASCE-Student-Chapter-MIST-61555554706462/",
+                    "https://www.linkedin.com/company/asce-student-chapter-mist",
+                  ],
+                  logo: "/images/logo.png",
+                },
+                {
+                  "@type": "WebSite",
+                  name: "ASCE Student Chapter, MIST",
+                  url: "https://asce-ce.mist.ac.bd/",
+                  potentialAction: {
+                    "@type": "SearchAction",
+                    target: "https://asce-ce.mist.ac.bd/search?q={search_term_string}",
+                    "query-input": "required name=search_term_string",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </body>
     </html>
   )
