@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
@@ -22,23 +23,18 @@ interface Webinar {
   videoUrl: string
 }
 
-interface WebinarDetailPageProps {
-  params: {
-    id: string
-  }
-}
-
-
 const backend = process.env.NEXT_PUBLIC_BACKEND
 
-export default function WebinarDetailPage({ params }: WebinarDetailPageProps) {
+export default function WebinarDetailPage() {
+  const params = useParams()
+  const id = params?.id as string
   const [webinar, setWebinar] = useState<Webinar | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchWebinar = async () => {
       try {
-        const res = await fetch(`${backend}/api/webinar/${params.id}`)
+        const res = await fetch(`${backend}/api/webinar/${id}`)
         if (!res.ok) throw new Error("Failed to fetch webinar")
         const data = await res.json()
         setWebinar(data)

@@ -1,20 +1,17 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-interface SocialEventDetailPageProps {
-  params: {
-    id: string
-  }
-}
-
 const backend = process.env.NEXT_PUBLIC_BACKEND
 
-export default function SocialEventDetailPage({ params }: SocialEventDetailPageProps) {
+export default function SocialEventDetailPage() {
+  const params = useParams()
+  const id = params?.id as string
   const [event, setEvent] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -22,7 +19,7 @@ export default function SocialEventDetailPage({ params }: SocialEventDetailPageP
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await fetch(`${backend}/api/events/${params.id}`)
+        const res = await fetch(`${backend}/api/events/${id}`)
         if (!res.ok) throw new Error("Failed to fetch event")
         const data = await res.json()
         setEvent(data)
@@ -33,7 +30,7 @@ export default function SocialEventDetailPage({ params }: SocialEventDetailPageP
       }
     }
     fetchEvent()
-  }, [params.id])
+  }, [id])
 
   if (loading) {
     return (

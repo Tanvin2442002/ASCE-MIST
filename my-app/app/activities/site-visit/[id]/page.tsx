@@ -1,5 +1,5 @@
 "use client"
-import { notFound } from "next/navigation"
+import { notFound, useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -36,13 +36,9 @@ async function getSiteVisitById(id: string): Promise<SiteVisit | null> {
   }
 }
 
-interface PageProps {
-  params: {
-    id: string
-  }
-}
-
-export default function SiteVisitDetailPage({ params }: PageProps) {
+export default function SiteVisitDetailPage() {
+  const params = useParams()
+  const id = params?.id as string
   const [visit, setVisit] = useState<SiteVisit | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -50,7 +46,7 @@ export default function SiteVisitDetailPage({ params }: PageProps) {
   useEffect(() => {
     const fetchVisit = async () => {
       try {
-        const data = await getSiteVisitById(params.id)
+        const data = await getSiteVisitById(id)
         if (!data) {
           setError("Site visit not found.")
           return
@@ -64,7 +60,7 @@ export default function SiteVisitDetailPage({ params }: PageProps) {
     }
 
     fetchVisit()
-  }, [params.id])
+  }, [id])
 
   const images = visit?.image_urls || []
 

@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { notFound } from "next/navigation"
+import { notFound, useParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar, MapPin, User, Play, ExternalLink } from "lucide-react"
@@ -21,10 +21,6 @@ interface Seminar {
   full_description?: string | null
   video_url?: string | null
   objectives?: string[]
-}
-
-interface SeminarDetailPageProps {
-  params: { id: string }
 }
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND
@@ -50,7 +46,9 @@ async function fetchSeminar(id: string): Promise<Seminar | null> {
   }
 }
 
-export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
+export default function SeminarDetailPage() {
+  const params = useParams()
+  const id = params?.id as string
   const [seminar, setSeminar] = useState<Seminar | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -58,7 +56,7 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
     let mounted = true
     const load = async () => {
       setLoading(true)
-      const data = await fetchSeminar(params.id)
+      const data = await fetchSeminar(id)
       if (!mounted) return
       if (!data) {
         setSeminar(null)
@@ -69,7 +67,7 @@ export default function SeminarDetailPage({ params }: SeminarDetailPageProps) {
     }
     load()
     return () => { mounted = false }
-  }, [params.id])
+  }, [id])
 
   if (loading) {
     return (

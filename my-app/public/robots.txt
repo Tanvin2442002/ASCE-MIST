@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+
+# Host
+Host: https://asce-ce.mist.ac.bd/
+
+# Sitemaps
+Sitemap: https://asce-ce.mist.ac.bd/sitemap.xml

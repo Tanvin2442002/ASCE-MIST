@@ -6,6 +6,7 @@ import { ArrowLeft, Calendar, Tag } from "lucide-react"
 import { MarkdownPreviewer } from "@/components/markdown-previewer"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
 
 
 const backend = process.env.NEXT_PUBLIC_BACKEND
@@ -21,13 +22,9 @@ interface Announcement {
   updated_at: string
 }
 
-interface AnnouncementDetailPageProps {
-  params: {
-    id: string
-  }
-}
-
-export default function AnnouncementDetailPage({ params }: AnnouncementDetailPageProps) {
+export default function AnnouncementDetailPage() {
+  const params = useParams()
+  const id = params?.id as string
   const [announcement, setAnnouncement] = useState<Announcement | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -35,7 +32,7 @@ export default function AnnouncementDetailPage({ params }: AnnouncementDetailPag
   useEffect(() => {
     const fetchAnnouncement = async () => {
       try {
-        const res = await fetch(`${backend}/api/announcements/${params.id}`, { cache: "no-store" })
+        const res = await fetch(`${backend}/api/announcements/${id}`, { cache: "no-store" })
         if (!res.ok) throw new Error("Failed to fetch announcement")
         const data = await res.json()
         setAnnouncement(data)
@@ -47,7 +44,7 @@ export default function AnnouncementDetailPage({ params }: AnnouncementDetailPag
     }
 
     fetchAnnouncement()
-  }, [params.id])
+  }, [id])
 
   if (loading) {
     return (
