@@ -17,21 +17,33 @@ const supabase = createClient(
 router.get("/upcoming-events", async (req, res) => {
   try {
     const events = await sql`
-      SELECT
-        id,
-        title,
-        date,
-        time,
-        organizer,
-        location,
-        category,
-        image,
-        description,
-        full_description,
-        registration_link
-      FROM public.upcoming_events
-      ORDER BY date ASC;
+      (
+        SELECT
+          id, title, date, time, organizer, location,
+          category, image, description, full_description, registration_link
+        FROM public.upcoming_events
+        WHERE date >= CURRENT_DATE
+        ORDER BY date ASC
+        LIMIT 3
+      )
+      UNION ALL
+      (
+        SELECT
+          id, title, date, time, organizer, location,
+          category, image, description, full_description, registration_link
+        FROM public.upcoming_events
+        WHERE date < CURRENT_DATE
+        ORDER BY date DESC
+        LIMIT (
+          3 - (
+            SELECT COUNT(*)
+            FROM public.upcoming_events
+            WHERE date >= CURRENT_DATE
+          )
+        )
+      );
     `;
+
     res.status(200).json(events);
   } catch (error) {
     console.error("Error fetching upcoming events:", error);
